@@ -1,0 +1,50 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+
+body {
+    font-family: Open Sans, sans-serif;
+}
+#wrapper {
+    width: 940px;
+    margin: 0 auto;
+}
+header {
+    margin-top: 20px;
+}
+.container {
+    margin-top: 60px;
+}
+.gallery-list {
+    float: left;
+    width: 17%;
+    margin-top: 39px;
+}
+.gallery-title {
+    position: absolute;
+    margin-left: 190px;
+    margin-top: 40px;
+}
+.photo-panel {
+    float: right;
+    width: 80%;
+    margin-top: 100px;
+}
+.photo-panel {
+    background-color: #FAFAFA;
+    border: 1px rgba(0,0,0,0.1) solid;
+    border-radius: 5px;
+}
+.photo-panel ul {
+    list-style: none;
+    margin-top: 30px;
+}
+.photo-panel li {
+    float: left;
+    margin: 0 0 30px 10px;
+}
+.photo-nav ul {
+    float: left;
+    margin: -5px 0 -10px 0;
+}
+#login-modal, #signup-modal {
+    width: 250px;
+}
