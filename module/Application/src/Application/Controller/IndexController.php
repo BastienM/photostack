@@ -11,6 +11,8 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -18,31 +20,59 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         /**
-         * $db is a SQL adapter to connect database throught
-         * PHP's PDO object
+         * $db is a SQL adapter to connect Application to a database
          *
          * @var object
          */
         $db = new \Zend\Db\Adapter\Adapter(array(
-            'driver' => 'Pdo_Mysql',
+            'driver'   => 'Pdo_Mysql',
             'database' => 'zend_gallery',
             'username' => 'root',
             'password' => 'debian'
             ));
 
         /*
-         * Choosing a random number between 1 and the total of users
-         * then retrieving his associated username
+         * Creating SQL query to retrieve users's pseudo
+         * who owns photo already
+         * 
+         * "SELECT `users`.pseudo
+         *  FROM `users`, `images`
+         *  WHERE `images`.owner = `users`.pseudo
+         *  GROUP BY users.pseudo;"
+         *  
          */
-        // $sql = "SELECT COUNT(pseudo) FROM users";
+        $sql = new Sql($db);
 
-        $username = "Hellow";
+        $select = $sql->select()
+                      ->from('users')
+                      ->join('images', 'users.pseudo = images.owner')
+                      ->where('`images`.owner = `users`.pseudo')
+                      ->group('users.pseudo');
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+
+        /**
+         * Getting rid of multi-dimensional array
+         * and stocking pseudos in a simple one
+         */
+        foreach ($result as $user) {
+            $userliste[] = $user['pseudo'];
+        }
+
+        /**
+         * $username equal the randomly selected user
+         * through $userliste index keys
+         * 
+         * @var string
+         */
+        $username = $userliste[array_rand($userliste)];
 
         /**
          * $imagesTable is a clone of a table
          * with the same name in Database
          *
-         * @var array
+         * @var     array
          * @param   string $table name of the table to clone
          * @param   object $db Db Adapter to use to connect
          */
@@ -56,6 +86,7 @@ class IndexController extends AbstractActionController
         return new ViewModel(array(
             'images' => $imageSet,
             'user'   => $username,
-            ));
+            'users'  => $userliste,
+        ));
     }
 }

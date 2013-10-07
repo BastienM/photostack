@@ -1,3 +1,17 @@
+<aside class="gallery-list">
+                <nav>
+                    <div class="uk-button-dropdown" data-uk-dropdown>
+                        <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
+                        <div class="uk-dropdown uk-dropdown-small">
+                            <ul class="uk-nav uk-nav-dropdown">
+                                <?php foreach ($this->users as $user) {
+                                  echo ("<li><a href='#$user' title='$user'><i class='uk-icon-folder-close'></i> $user</a></li>");
+                                } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
 <?php echo ("<h2 class='uk-text-large gallery-title'>".$this->user."'s gallery</h2>"); ?>
 <section class="photo-panel">
     <ul>
