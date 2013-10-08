@@ -20,7 +20,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         /**
-         * $db is a SQL adapter to connect Application to a database
+         * $db is a SQL adapter to link App to Database
          *
          * @var object
          */
@@ -33,13 +33,12 @@ class IndexController extends AbstractActionController
 
         /*
          * Creating SQL query to retrieve users's pseudo
-         * who owns photo already
+         * who already owns photos
          * 
          * "SELECT `users`.pseudo
          *  FROM `users`, `images`
          *  WHERE `images`.owner = `users`.pseudo
          *  GROUP BY users.pseudo;"
-         *  
          */
         $sql = new Sql($db);
 
@@ -53,8 +52,7 @@ class IndexController extends AbstractActionController
         $result = $statement->execute();
 
         /**
-         * Getting rid of multi-dimensional array
-         * and stocking pseudos in a simple one
+         * Fetching pseudos only in a new array
          */
         foreach ($result as $user) {
             $userliste[] = $user['pseudo'];
@@ -74,7 +72,7 @@ class IndexController extends AbstractActionController
          *
          * @var     array
          * @param   string $table name of the table to clone
-         * @param   object $db Db Adapter to use to connect
+         * @param   object $db SQL connexion to use
          */
         $imagesTable = new TableGateway('images', $db);
 
