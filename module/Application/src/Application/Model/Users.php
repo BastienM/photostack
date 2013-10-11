@@ -2,7 +2,7 @@
 
 namespace Application\Model;
 
-class Category
+class Users
 {
     public $pseudo;
     public $password;

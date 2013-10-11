@@ -5,17 +5,20 @@ namespace Application\Model;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Adapter\AdapterAwareInterface;
+use Zend\Db\Sql\Select;
 
-class UsersTable extends AbstractTableGateway
+class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     // Table name in database
     protected $table ='users';
 
-    public function __construct(Adapter $adapter)
+    public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
-        $this->resultSetPrototype = new ResultSet();
-        $this->resultSetPrototype->setArrayObjectPrototype(new Users());
+        $this->resultSetPrototype = new HydratingResultSet();
+
         $this->initialize();
     }
 
@@ -27,7 +30,7 @@ class UsersTable extends AbstractTableGateway
 
     public function getUserInfo($pseudo)
     {
-        $pseudo  = (string)$pseudo;
+        $pseudo  = $pseudo;
         $rowset = $this->select(array('pseudo' => $pseudo));
         $row = $rowset->current();
 
@@ -38,13 +41,26 @@ class UsersTable extends AbstractTableGateway
         return $row;
     }
 
+    public function getUsersList()
+    {
+        $select = new Select();
+        $usersList = $this->select(function ($select)
+        {
+            $select->join('images', 'users.pseudo = images.owner')
+            ->where('`images`.owner = `users`.pseudo')
+            ->group('users.pseudo');
+        });
+
+        return $usersList;
+    }
+
     public function saveUserInfo(Users $users)
     {
         $data = array(
-            'pseudo'   => $users->pseudo
-            'password' => $users->password
-            'mail'     => $users->mail
-            'age'      => $users->age
+            'pseudo'   => $users->pseudo,
+            'password' => $users->password,
+            'mail'     => $users->mail,
+            'age'      => $users->age,
             );
 
         $pseudo = (string)$users->pseudo;

@@ -11,6 +11,8 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Applciation\Model\UsersTable;
+use Applciation\Model\ImagesTable;
 
 class Module
 {
@@ -32,8 +34,25 @@ class Module
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    ),
                 ),
-            ),
-        );
+            );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'initializers' => array(
+                function ($instance, $sm) {
+                   if ($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface) {
+                       $instance->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
+                   }
+               }
+               ),
+            'invokables' => array(
+                'UsersTable'  =>  'Application\Model\UsersTable',
+                'ImagesTable' =>  'Application\Model\ImagesTable'
+                ),
+            );
     }
 }

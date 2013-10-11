@@ -11,50 +11,43 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Db\TableGateway\TableGateway;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Expression;
+use Zend\Db\Sql;
 use Zend\View\Model\ViewModel;
+use Application\Model\UsersTable;
+use Application\Model\ImagesTable;
 
 class IndexController extends AbstractActionController
 {
+    protected $imagesTable;
+    protected $usersTable;
+
+    public function getUsersTable()
+    {
+        if (!$this->usersTable) {
+            $sm = $this->getServiceLocator();
+            $this->usersTable = $sm->get('UsersTable');
+        }
+        return $this->usersTable;
+    }
+
+    public function getImagesTable()
+    {
+        if (!$this->imagesTable) {
+            $sm = $this->getServiceLocator();
+            $this->imagesTable = $sm->get('ImagesTable');
+        }
+        return $this->imagesTable;
+    }
+
     public function indexAction()
     {
-        /**
-         * $db is a SQL adapter to link App to Database
-         *
-         * @var object
-         */
-        $db = new \Zend\Db\Adapter\Adapter(array(
-            'driver'   => 'Pdo_Mysql',
-            'database' => 'zend_gallery',
-            'username' => 'root',
-            'password' => 'debian'
-            ));
 
-        /*
-         * Creating SQL query to retrieve users's pseudo
-         * who already owns photos
-         * 
-         * "SELECT `users`.pseudo
-         *  FROM `users`, `images`
-         *  WHERE `images`.owner = `users`.pseudo
-         *  GROUP BY users.pseudo;"
-         */
-        $sql = new Sql($db);
-
-        $select = $sql->select()
-                      ->from('users')
-                      ->join('images', 'users.pseudo = images.owner')
-                      ->where('`images`.owner = `users`.pseudo')
-                      ->group('users.pseudo');
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
+        $users = $this->getUsersTable()->getUsersList();
 
         /**
          * Fetching pseudos only in a new array
          */
-        foreach ($result as $user) {
+        foreach ($users as $user) {
             $userliste[] = $user['pseudo'];
         }
 
@@ -64,27 +57,17 @@ class IndexController extends AbstractActionController
          * 
          * @var string
          */
-        $username = $userliste[array_rand($userliste)];
-
-        /**
-         * $imagesTable is a clone of a table
-         * with the same name in Database
-         *
-         * @var     array
-         * @param   string $table name of the table to clone
-         * @param   object $db SQL connexion to use
-         */
-        $imagesTable = new TableGateway('images', $db);
+        $randomUser = $userliste[array_rand($userliste)];
 
         /*
          * Picking up only the photos whose are owned by the selected user
          */
-        $imageSet = $imagesTable->select(array('owner' => $username));
+        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
         return new ViewModel(array(
             'images' => $imageSet,
-            'user'   => $username,
+            'user'   => $randomUser,
             'users'  => $userliste,
-        ));
+            ));
     }
 }
