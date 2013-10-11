@@ -21,6 +21,13 @@ class IndexController extends AbstractActionController
     protected $imagesTable;
     protected $usersTable;
 
+    /**
+     * getUsersTable is method which allow us to
+     * use UsersTable (TableGateway object)
+     * dynamicly through the Service Manager 
+     *
+     * @return object TableGateway instance of UsersTable
+     */
     public function getUsersTable()
     {
         if (!$this->usersTable) {
@@ -30,6 +37,13 @@ class IndexController extends AbstractActionController
         return $this->usersTable;
     }
 
+    /**
+     * getImagesTable is method which allow us to
+     * use ImagesTable (TableGateway object)
+     * dynamicly through the Service Manager 
+     *
+     * @return object TableGateway instance of ImagesTable
+     */
     public function getImagesTable()
     {
         if (!$this->imagesTable) {
@@ -42,6 +56,12 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
+        /**
+         * $users contains the list of all users
+         * who has upload at least one image
+         *
+         * @var array
+         */
         $users = $this->getUsersTable()->getUsersList();
 
         /**
