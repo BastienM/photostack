@@ -65,7 +65,7 @@ class IndexController extends AbstractActionController
         $users = $this->getUsersTable()->getUsersList();
 
         /**
-         * Fetching pseudos only in a new array
+         * Fetching pseudos in a new array
          */
         foreach ($users as $user) {
             $userliste[] = $user['pseudo'];

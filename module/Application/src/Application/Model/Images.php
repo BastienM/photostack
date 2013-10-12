@@ -2,7 +2,7 @@
 
 namespace Application\Model;
 
-class Imuploadeds
+class Images
 {
     public $id;
     public $url;

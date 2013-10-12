@@ -10,9 +10,17 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
 {
-    // Table name in database
+    /*
+     * Table name in database
+     */
     protected $table ='images';
 
+    /**
+     * setDbAdapter allow to call the class from within the
+     * ServiceManager and initialize the Adapter in the same time
+     *
+     * @param Adapter $adapter called via getServiceConfig() in Module.php
+     */
     public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
@@ -21,12 +29,25 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
         $this->initialize();
     }
 
+    /**
+     * fetchAll fetchs the whole table
+     *
+     * @return array
+     */
     public function fetchAll()
     {
         $resultSet = $this->select();
         return $resultSet;
     }
 
+    /**
+     * getImageInfo fetch all the infos about the 
+     * image's ID# provided
+     *
+     * @param  int $id image's ID#
+     *
+     * @return array result row of ID#
+     */
     public function getImageInfo($id)
     {
         $id  = (int)$id;
@@ -40,6 +61,14 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
         return $row;
     }
 
+    /**
+     * getUserImages fetchs all the images of 
+     * the username provided
+     *
+     * @param  string $pseudo [description]
+     *
+     * @return [type]         [description]
+     */
     public function getUserImages($pseudo)
     {
         $userImages = $this->select(array('owner' => $pseudo));
@@ -47,31 +76,40 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
         return $userImages;
     }
 
-    // public function saveUserInfo(Users $users)
-    // {
-    //     $data = array(
-    //         'pseudo'   => $users->pseudo
-    //         'password' => $users->password
-    //         'mail'     => $users->mail
-    //         'age'      => $users->age
-    //         );
+    /*
+     * under construction
+     * 
+    public function saveUserInfo(Users $users)
+    {
+        $data = array(
+            'pseudo'   => $users->pseudo
+            'password' => $users->password
+            'mail'     => $users->mail
+            'age'      => $users->age
+            );
 
-    //     $pseudo = (string)$users->pseudo;
+        $pseudo = (string)$users->pseudo;
 
-    //     if ($this->getUserInfo($pseudo) == null) {
-    //         $this->insert($data);
-    //     } elseif ($this->getUserInfo($pseudo) !== null) {
-    //         $this->update(
-    //             $data,
-    //             array(
-    //                 'pseudo' => $pseudo,
-    //                 )
-    //             );
-    //     } else {
-    //         throw new \Exception('Form pseudo does not exist');
-    //     }
-    // }
+        if ($this->getUserInfo($pseudo) == null) {
+            $this->insert($data);
+        } elseif ($this->getUserInfo($pseudo) !== null) {
+            $this->update(
+                $data,
+                array(
+                    'pseudo' => $pseudo,
+                    )
+                );
+        } else {
+            throw new \Exception('Form pseudo does not exist');
+        }
+    }*/
 
+    /**
+     * deleteImage delete the image whose ID# is provided
+     *
+     * @param  int $id image's ID#
+     *
+     */
     public function deleteImage($id)
     {
         $this->delete(array('id' => $id));

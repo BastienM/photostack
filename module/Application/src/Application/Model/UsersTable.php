@@ -11,9 +11,17 @@ use Zend\Db\Sql\Select;
 
 class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
-    // Table name in database
+    /*
+     * Table name in database
+     */
     protected $table ='users';
 
+    /**
+     * setDbAdapter allow to call the class from within the
+     * ServiceManager and initialize the Adapter in the same time
+     *
+     * @param Adapter $adapter called via getServiceConfig() in Module.php
+     */
     public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
@@ -22,12 +30,24 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $this->initialize();
     }
 
+    /**
+     * fetchAll fetchs the whole table
+     *
+     * @return array
+     */
     public function fetchAll()
     {
         $resultSet = $this->select();
         return $resultSet;
     }
 
+    /**
+     * getUserInfo fetchs all the information about the user
+     *
+     * @param  string $pseudo user's pseudo
+     *
+     * @return array contains all user's info
+     */
     public function getUserInfo($pseudo)
     {
         $pseudo  = $pseudo;
@@ -41,6 +61,12 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         return $row;
     }
 
+    /**
+     * getUsersList fetchs all usernames whom had upload
+     * at least one image
+     *
+     * @return array usernames list
+     */
     public function getUsersList()
     {
         $select = new Select();
@@ -54,6 +80,9 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         return $usersList;
     }
 
+    /*
+     *  under construction
+     * 
     public function saveUserInfo(Users $users)
     {
         $data = array(
@@ -77,8 +106,14 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         } else {
             throw new \Exception('Form pseudo does not exist');
         }
-    }
+    }*/
 
+    /**
+     * deleteUser delete the user account whose username is provided
+     *
+     * @param  int $pseudo user's pseudo
+     *
+     */
     public function deleteUser($pseudo)
     {
         $this->delete(array('pseudo' => $pseudo));
