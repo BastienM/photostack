@@ -4,7 +4,8 @@
                         <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
                         <div class="uk-dropdown uk-dropdown-small">
                             <ul class="uk-nav uk-nav-dropdown">
-                                <?php foreach ($this->users as $user) {
+                                <?php foreach ($this->users as $user)
+                                {
                                   echo ("<li><a href='#$user' title='$user'><i class='uk-icon-folder-close'></i> $user</a></li>");
                                 } ?>
                             </ul>
@@ -16,15 +17,16 @@
 <section class="photo-panel">
     <ul>
         <?php
-        foreach ($this->images as $imageRow) {
+        foreach ($this->images as $imageRow)
+        {
             echo ("<li>
-                <figure class='uk-thumbnail uk-overlay-toggle'>
-                <div class='uk-overlay'>
-                <img src='".$imageRow['url']."' alt=''>
-                <div class='uk-overlay-area'></div>
-                </div>
-                <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
-                </figure>
+                    <figure class='uk-thumbnail uk-overlay-toggle'>
+                        <div class='uk-overlay'>
+                            <img src='".$imageRow['url']."' alt=''>
+                            <div class='uk-overlay-area'></div>
+                        </div>
+                        <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
+                    </figure>
                 </li>");
         } ?>
     </ul>

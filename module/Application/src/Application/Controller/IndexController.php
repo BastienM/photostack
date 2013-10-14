@@ -62,12 +62,12 @@ class IndexController extends AbstractActionController
          *
          * @var array
          */
-        $users = $this->getUsersTable()->getUsersList();
+        $users = $this->getUsersTable()->getUsersOwningPhotoList();
 
         /**
          * Fetching pseudos in a new array
          */
-        foreach ($users as $user) {
+        foreach ($this->getUsersTable()->getUsersList() as $user) {
             $userliste[] = $user['pseudo'];
         }
 

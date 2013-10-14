@@ -62,22 +62,37 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     }
 
     /**
-     * getUsersList fetchs all usernames whom had upload
+     * getUsersOwningPhotoList fetchs all usernames whom had upload
      * at least one image
      *
      * @return array usernames list
      */
-    public function getUsersList()
+    public function getUsersOwningPhotoList()
     {
         $select = new Select();
-        $usersList = $this->select(function ($select)
+        $list = $this->select(function ($select)
         {
             $select->join('images', 'users.pseudo = images.owner')
             ->where('`images`.owner = `users`.pseudo')
             ->group('users.pseudo');
         });
 
-        return $usersList;
+        return $list;
+    }
+
+    /**
+     * getUsersList fetchs all existing users
+     *
+     * @return array users list
+     */
+    public function getUsersList()
+    {
+        $usersList = $this->select(function ($select)
+        {
+            $select->columns(array('pseudo'));
+        });
+
+        return $usersList->toArray();
     }
 
     /*
