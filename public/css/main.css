@@ -46,5 +46,8 @@ header {
     margin: -5px 0 -10px 0;
 }
 #login-modal, #signup-modal {
-    width: 250px;
+    width: 350px;
+}
+.uk-form-large {
+    width: 310px;
 }

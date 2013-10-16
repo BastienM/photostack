@@ -1,44 +1,31 @@
 <?php
 
-namespace Application\Form; 
+namespace Application\Form;
 
-use Zend\Form\Element; 
-use Zend\Form\Form; 
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class LoginForm extends Form 
-{ 
-    public function __construct($name = null) 
-    { 
-        parent::__construct('application/form'); 
-        
-        $this->setAttributes(array(
-            'action' => '#',
-            'method' => 'post',
-            'class'  => 'uk-form'
-        ));
-        
-        $this->add(array( 
-            'name'       => 'email', 
-            'type'       => 'Zend\Form\Element\Email', 
-            'attributes' => array(
-                'class'       => 'uk-form-large', 
-                'placeholder' => 'Adresse Mail', 
-                'required'    => 'required', 
-            ), 
-            'options'    => array( 
-            ), 
+class LoginForm extends Form
+{
+    public function __construct()
+    {
+        parent::__construct('login_users');
+
+        $this->setAttribute('method', 'post')
+             ->setHydrator(new ClassMethodsHydrator(false))
+             ->setInputFilter(new InputFilter());
+
+        $this->add(array(
+            'type' => 'Application\Form\UsersFieldset',
+            'options' => array(
+                'use_as_base_fieldset' => true
+            )
         ));
 
-        $this->add(array( 
-            'name'       => 'password', 
-            'type'       => 'Zend\Form\Element\Password', 
-            'attributes' => array( 
-                'class'       => 'uk-form-large', 
-                'placeholder' => 'Mot de passe', 
-                'required'    => 'required', 
-                ), 
-            'options'    => array( 
-                ), 
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'csrf'
         ));
 
         $this->add(array( 
@@ -49,7 +36,7 @@ class LoginForm extends Form
                 'value' => 'LOGIN',
                 ), 
             'options'    => array( 
-                ), 
-        ));    
-    } 
-} 
+                ),
+        ));
+    }
+}

@@ -7,8 +7,8 @@
                                 <?php foreach ($this->users as $user)
                                 {
                                   echo ("<li>
-                                            <a href='#".$user['pseudo']."' title='".$user['pseudo']."'>
-                                                <i class='uk-icon-folder-close'></i> ".$user['pseudo']."
+                                            <a href='#".$user['username']."' title='".$user['username']."'>
+                                                <i class='uk-icon-folder-close'></i> ".$user['username']."
                                             </a>
                                         </li>");
                                 } ?>
@@ -39,26 +39,26 @@
     <div id="login-modal" class="uk-modal-dialog uk-modal-dialog-slide">
         <a class="uk-modal-close uk-close"></a>
         <?php
-            $loginForm = $this->loginForm;
-            $loginForm->setAttribute('action', '#');
-            $loginForm->prepare();
+            $loginForm->setAttribute('action', '#'/*$this->url('account')*/)
+                      ->prepare();
 
             echo $this->form()->openTag($loginForm);
+            $users = $loginForm->get('users');
         ?>
-        <fieldset>
-            <legend>Se connecter</legend>
+        <h3><i class="uk-icon-lock"></i> LOGIN IN</h3>
+        <hr>
         <?
+                
                 echo "<div class='uk-form-row'>";
-                echo $this->formRow($loginForm->get('email'));
+                echo $this->formRow($users->get('mail'));
                 echo "</div>";
                 echo "<div class='uk-form-row'>";
-                echo $this->formRow($loginForm->get('password'));
+                echo $this->formRow($users->get('password'));
                 echo "</div>";
                 echo "<div class='uk-form-row'>";
-                echo $this->formSubmit($loginForm->get('submit'));
+                echo $this->formElement($loginForm->get('submit'));
                 echo "</div>";
-        ?>
-        </fieldset>
-        <?php echo $this->form()->closeTag(); ?>
+                echo $this->formHidden($loginForm->get('csrf'));
+        echo $this->form()->closeTag(); ?>
     </div>
 </div>

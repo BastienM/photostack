@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
 use Application\Form\LoginForm;
@@ -69,7 +70,7 @@ class IndexController extends AbstractActionController
          */
         foreach ($users as $user)
         {
-            $userliste[] = $user['pseudo'];
+            $userliste[] = $user['username'];
         }
 
         /**
@@ -85,16 +86,23 @@ class IndexController extends AbstractActionController
          */
         $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
-        /**
-         * Initializing our LoginForm to pass it to the view
-         */
         $formLogin = new LoginForm();
+        $users = new Users();
+        $formLogin->bind($users);
 
-        return new ViewModel(array(
-            'images'    => $imageSet,
-            'user'      => $randomUser,
-            'users'     => $this->getUsersTable()->getUserList(),
-            'loginForm' => $formLogin,
+        if ($this->request->isPost()) {
+           $formLogin->setData($this->request->getPost());
+
+           if ($formLogin->isValid()) {
+               var_dump($users);
+           }
+       }
+
+       return new ViewModel(array(
+        'images'    => $imageSet,
+        'user'      => $randomUser,
+        'users'     => $this->getUsersTable()->getUserList(),
+        'loginForm' => $formLogin,
         ));
-    }
+   }
 }

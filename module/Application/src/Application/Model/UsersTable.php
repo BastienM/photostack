@@ -48,14 +48,14 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array contains all user's info
      */
-    public function getUserInfo($pseudo)
+    public function getUserInfo($username)
     {
-        $pseudo  = $pseudo;
-        $rowset = $this->select(array('pseudo' => $pseudo));
+        $username  = $username;
+        $rowset = $this->select(array('username' => $username));
         $row = $rowset->current();
 
         if (!$row) {
-            throw new \Exception("Could not find user $pseudo");
+            throw new \Exception("Could not find user $username");
         }
 
         return $row;
@@ -72,9 +72,9 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $select = new Select();
         $list = $this->select(function ($select)
         {
-            $select->join('images', 'users.pseudo = images.owner')
-            ->where('`images`.owner = `users`.pseudo')
-            ->group('users.pseudo');
+            $select->join('images', 'users.username = images.owner')
+            ->where('`images`.owner = `users`.username')
+            ->group('users.username');
         });
 
         return $list;
@@ -89,7 +89,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     {
         $usersList = $this->select(function ($select)
         {
-            $select->columns(array('pseudo'));
+            $select->columns(array('username'));
         });
 
         return $usersList->toArray();
@@ -101,36 +101,36 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function saveUserInfo(Users $users)
     {
         $data = array(
-            'pseudo'   => $users->pseudo,
+            'username'   => $users->username,
             'password' => $users->password,
             'mail'     => $users->mail,
             'age'      => $users->age,
             );
 
-        $pseudo = (string)$users->pseudo;
+        $username = (string)$users->username;
 
-        if ($this->getUserInfo($pseudo) == null) {
+        if ($this->getUserInfo($username) == null) {
             $this->insert($data);
-        } elseif ($this->getUserInfo($pseudo) !== null) {
+        } elseif ($this->getUserInfo($username) !== null) {
             $this->update(
                 $data,
                 array(
-                    'pseudo' => $pseudo,
+                    'username' => $username,
                     )
                 );
         } else {
-            throw new \Exception('Form pseudo does not exist');
+            throw new \Exception('Form username does not exist');
         }
     }*/
 
     /**
      * deleteUser delete the user account whose username is provided
      *
-     * @param  int $pseudo user's pseudo
+     * @param  int $username user's username
      *
      */
-    public function deleteUser($pseudo)
+    public function deleteUser($username)
     {
-        $this->delete(array('pseudo' => $pseudo));
+        $this->delete(array('username' => $username));
     }
 }
