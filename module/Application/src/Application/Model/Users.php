@@ -4,10 +4,10 @@ namespace Application\Model;
 
 class Users
 {
-    public $pseudo;
-    public $password;
-    public $mail;
-    public $age
+    private $pseudo;
+    private $password;
+    private $mail;
+    private $age
     
     public function exchangeArray($data)
     {

@@ -6,7 +6,11 @@
                             <ul class="uk-nav uk-nav-dropdown">
                                 <?php foreach ($this->users as $user)
                                 {
-                                  echo ("<li><a href='#$user' title='$user'><i class='uk-icon-folder-close'></i> $user</a></li>");
+                                  echo ("<li>
+                                            <a href='#".$user['pseudo']."' title='".$user['pseudo']."'>
+                                                <i class='uk-icon-folder-close'></i> ".$user['pseudo']."
+                                            </a>
+                                        </li>");
                                 } ?>
                             </ul>
                         </div>
@@ -22,7 +26,7 @@
             echo ("<li>
                     <figure class='uk-thumbnail uk-overlay-toggle'>
                         <div class='uk-overlay'>
-                            <img src='".$imageRow['url']."' alt=''>
+                            <img src='".$imageRow['url']."' alt='".$imageRow['id']."_".str_replace(' ', '_', $imageRow['name'])."'>
                             <div class='uk-overlay-area'></div>
                         </div>
                         <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
@@ -31,3 +35,30 @@
         } ?>
     </ul>
 </section>
+<div id="login" class="uk-modal">
+    <div id="login-modal" class="uk-modal-dialog uk-modal-dialog-slide">
+        <a class="uk-modal-close uk-close"></a>
+        <?php
+            $loginForm = $this->loginForm;
+            $loginForm->setAttribute('action', '#');
+            $loginForm->prepare();
+
+            echo $this->form()->openTag($loginForm);
+        ?>
+        <fieldset>
+            <legend>Se connecter</legend>
+        <?
+                echo "<div class='uk-form-row'>";
+                echo $this->formRow($loginForm->get('email'));
+                echo "</div>";
+                echo "<div class='uk-form-row'>";
+                echo $this->formRow($loginForm->get('password'));
+                echo "</div>";
+                echo "<div class='uk-form-row'>";
+                echo $this->formSubmit($loginForm->get('submit'));
+                echo "</div>";
+        ?>
+        </fieldset>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</div>

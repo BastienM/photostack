@@ -67,7 +67,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array usernames list
      */
-    public function getUsersOwningPhotoList()
+    public function getUsersOwningPhoto()
     {
         $select = new Select();
         $list = $this->select(function ($select)
@@ -85,7 +85,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array users list
      */
-    public function getUsersList()
+    public function getUserList()
     {
         $usersList = $this->select(function ($select)
         {
