@@ -1,0 +1,35 @@
+ <header>
+            <nav class="uk-navbar">
+                <a href="#" class="uk-navbar-brand">PhotoStack</a>
+
+                <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
+                    <a class="uk-button uk-button-success" href="#login" data-uk-modal><i class="uk-icon-lock"></i> Login</a>
+                    <a class="uk-button uk-button-primary" href="#signup" data-uk-modal><i class="uk-icon-signin"></i> Sign Up</a>
+                </div>
+            </nav>
+        </header><!-- /header -->
+        <section class="container">
+        </section>
+        <div id="login">
+    <?php
+    $loginForm->setAttribute('action', $this->url('home'))
+    ->prepare();
+    echo $this->form()->openTag($form);
+    $users = $form->get('users');
+    ?>
+    <h3><i class="uk-icon-unlock"></i> LOGIN IN</h3>
+    <hr>
+    <?
+
+    echo "<div class='uk-form-row'>";
+    echo $this->formRow($users->get('mail'));
+    echo "</div>";
+    echo "<div class='uk-form-row'>";
+    echo $this->formRow($users->get('password'));
+    echo "</div>";
+    echo "<div class='uk-form-row'>";
+    echo $this->formElement($form->get('submit'));
+    echo "</div>";
+    echo $this->formHidden($form->get('csrf'));
+    echo $this->form()->closeTag(); ?>
+</div>

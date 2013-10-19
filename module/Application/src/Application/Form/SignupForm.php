@@ -6,18 +6,18 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class LoginForm extends Form
+class SignupForm extends Form
 {
     public function __construct()
     {
-        parent::__construct('login_form');
+        parent::__construct('signup_users');
 
         $this->setAttribute('method', 'post')
              ->setHydrator(new ClassMethodsHydrator(false))
              ->setInputFilter(new InputFilter());
 
         $this->add(array(
-            'type' => 'Application\Form\UsersLoginFieldset',
+            'type' => 'Application\Form\UsersSignupFieldset',
             'options' => array(
                 'use_as_base_fieldset' => true
             )
@@ -33,8 +33,10 @@ class LoginForm extends Form
             'type'       => 'submit', 
             'attributes' => array( 
                 'class' => 'uk-button uk-button-expand uk-button-large',
-                'value' => 'LOGIN',
-            ),
+                'value' => 'SIGN UP',
+                ), 
+            'options'    => array( 
+                ),
         ));
     }
 }

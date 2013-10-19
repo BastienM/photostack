@@ -15,6 +15,7 @@ use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
 use Application\Form\LoginForm;
+use Application\Form\SignupForm;
 
 class IndexController extends AbstractActionController
 {
@@ -86,23 +87,43 @@ class IndexController extends AbstractActionController
          */
         $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
+        /*
+         * Initializing Login Form
+         */
         $formLogin = new LoginForm();
         $users = new Users();
         $formLogin->bind($users);
 
-        if ($this->request->isPost()) {
-           $formLogin->setData($this->request->getPost());
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $formLogin->setData($request->getPost());
 
-           if ($formLogin->isValid()) {
-               var_dump($users);
-           }
-       }
+            if ($formLogin->isValid()) {
+                var_dump($users);
+            }
+        }
 
-       return new ViewModel(array(
-        'images'    => $imageSet,
-        'user'      => $randomUser,
-        'users'     => $this->getUsersTable()->getUserList(),
-        'loginForm' => $formLogin,
-        ));
-   }
+        /*
+         * Initializing SignUp Form
+         */
+        $formSignup = new SignupForm();
+        $formSignup->bind($users);
+
+        if ($request->isPost()) {
+            $formSignup->setData($request->getPost());
+
+            if ($formSignup->isValid()) {
+                var_dump($users);
+            } else print_r("KO");
+        }
+
+
+        return new ViewModel(array(
+            'images'     => $imageSet,
+            'user'       => $randomUser,
+            'users'      => $this->getUsersTable()->getUserList(),
+            'loginForm'  => $formLogin,
+            'signupForm' => $formSignup,
+            ));
+    }
 }

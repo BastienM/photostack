@@ -7,37 +7,25 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class UsersFieldset extends Fieldset implements InputFilterProviderInterface
+class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterface
 {
     public function __construct()
     {
         parent::__construct('users');
         $this->setHydrator(new ClassMethodsHydrator(false))
-             ->setObject(new Users());
+        ->setObject(new Users());
 
         $this->setLabel('Users');
 
         $this->add(array(
             'name' => 'username',
             'options' => array(
-            ),
+                ),
             'attributes' => array(
                 'class'       => 'uk-form-large',
                 'placeholder' => 'Username', 
                 'required'    => 'required'
-            )
-        ));
-
-        $this->add(array( 
-            'name'       => 'password', 
-            'type'       => 'Zend\Form\Element\Password', 
-            'attributes' => array( 
-                'class'       => 'uk-form-large', 
-                'placeholder' => 'Password', 
-                'required'    => 'required', 
-                ), 
-            'options'    => array( 
-                ), 
+                )
         ));
 
         $this->add(array( 
@@ -45,11 +33,11 @@ class UsersFieldset extends Fieldset implements InputFilterProviderInterface
             'type'       => 'Zend\Form\Element\Email', 
             'attributes' => array(
                 'class'       => 'uk-form-large', 
-                'placeholder' => 'Mail address', 
+                'placeholder' => 'your@mail.com', 
                 'required'    => 'required', 
-            ), 
+                ), 
             'options'    => array( 
-            ), 
+                ), 
         ));
 
         $this->add(array( 
@@ -58,11 +46,10 @@ class UsersFieldset extends Fieldset implements InputFilterProviderInterface
                 'class'       => 'uk-form-large', 
                 'placeholder' => 'Your age', 
                 //'required'    => 'required', 
-            ), 
+                ), 
             'options'    => array( 
-            ), 
+                ), 
         ));
-
     }
 
     /**
@@ -73,15 +60,48 @@ class UsersFieldset extends Fieldset implements InputFilterProviderInterface
         return array(
             'username' => array(
                 'required' => true,
-            ),
-            'password' => array(
-                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'not_empty',
+                    ),
+                    array(
+                        'name' => 'string_length',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 25,
+                        ),
+                    ),
+                ),
             ),
             'mail' => array(
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'not_empty',
+                    ),
+                    array(
+                        'name' => 'string_length',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 150,
+                        ),
+                    ),
+                ),
             ),
             'age' => array(
-                'required' => true,
+                // 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'not_empty',
+                    ),
+                    array(
+                        'name' => 'string_length',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 2,
+                        ),
+                    ),
+                ),
             )
         );
     }
