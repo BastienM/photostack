@@ -1,0 +1,40 @@
+ <header>
+    <nav class="uk-navbar">
+        <a href="#" class="uk-navbar-brand">PhotoStack</a>
+
+        <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
+            <a class="uk-button uk-button-success" href="<?php echo $this->url('signin'); ?>"><i class="uk-icon-lock"></i> Login</a>
+            <a class="uk-button uk-button-primary" href="<?php echo $this->url('signup'); ?>"><i class="uk-icon-signin"></i> Sign Up</a>
+        </div>
+    </nav>
+</header><!-- /header -->
+<section class="container">
+</section>
+<div id="signup">
+    <?php
+    $form->setAttribute('action', $this->url('signup'))
+         ->prepare();
+
+    echo $this->form()->openTag($form);
+    $users = $form->get('users');
+    ?>
+    <h3><i class="uk-icon-bookmark"></i> SIGN UP</h3>
+    <hr>
+    <?
+
+    echo "<div class='uk-form-row'>";
+    echo $this->formRow($users->get('mail'));
+    echo "</div>";
+    echo "<div class='uk-form-row'>";
+    echo $this->formRow($users->get('username'));
+    echo "</div>";
+    echo "<div class='uk-form-row'>";
+    echo $this->formRow($users->get('age'));
+    echo "</div>";
+    echo "<div class='uk-form-row'>";
+    echo $this->formElement($form->get('submit'));
+    echo "</div>";
+    echo $this->formHidden($form->get('csrf'));
+    echo $this->form()->closeTag(); ?>
+</div>
+</div>

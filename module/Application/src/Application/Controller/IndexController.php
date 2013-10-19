@@ -14,8 +14,6 @@ use Zend\View\Model\ViewModel;
 use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
-use Application\Form\LoginForm;
-use Application\Form\SignupForm;
 
 class IndexController extends AbstractActionController
 {
@@ -87,43 +85,11 @@ class IndexController extends AbstractActionController
          */
         $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
-        /*
-         * Initializing Login Form
-         */
-        $formLogin = new LoginForm();
-        $users = new Users();
-        $formLogin->bind($users);
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $formLogin->setData($request->getPost());
-
-            if ($formLogin->isValid()) {
-                var_dump($users);
-            }
-        }
-
-        /*
-         * Initializing SignUp Form
-         */
-        $formSignup = new SignupForm();
-        $formSignup->bind($users);
-
-        if ($request->isPost()) {
-            $formSignup->setData($request->getPost());
-
-            if ($formSignup->isValid()) {
-                var_dump($users);
-            } else print_r("KO");
-        }
-
 
         return new ViewModel(array(
             'images'     => $imageSet,
             'user'       => $randomUser,
-            'users'      => $this->getUsersTable()->getUserList(),
-            'loginForm'  => $formLogin,
-            'signupForm' => $formSignup,
+            'users'      => $this->getUsersTable()->getUserList()
             ));
     }
 }

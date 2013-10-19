@@ -20,13 +20,23 @@ return array(
                     ),
                 ),
             ),
-            'auth' => array(
+            'signin' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/auth',
+                    'route'    => '/signin',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Auth',
-                        'action'     => 'login',
+                        'action'     => 'signin',
+                    ),
+                ),
+            ),
+            'signup' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/signup',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'signup',
                     ),
                 ),
             ),
@@ -83,7 +93,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Auth' => 'Application\Controller\AuthController',
         ),
     ),
     'view_manager' => array(

@@ -11,35 +11,55 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Model\Users;
 use Application\Form\LoginForm;
+use Application\Form\SignupForm;
 
 class AuthController extends AbstractActionController
 {
-    public function loginAction()
+    public function signinAction()
     {
         /**
          * Initializing Login Form
          */
-        $formLogin = new LoginForm();
+        $form = new LoginForm();
         $users = new Users();
-        $formLogin->bind($users);
+        $form->bind($users);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $formLogin->setData($request->getPost());
+            $form->setData($request->getPost());
 
-            if ($formLogin->isValid()) {
+            if ($form->isValid()) {
                 var_dump($users);
             }
         }
 
         return new ViewModel(array(
             'form'  => $form,
-            ));
+        ));
     }
 
-    public function signAction()
+    public function signupAction()
     {
-        
+        /**
+         * Initializing Login Form
+         */
+        $form = new SignupForm();
+        $users = new Users();
+        $form->bind($users);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                var_dump($users);
+            }
+        }
+
+        return new ViewModel(array(
+            'form'  => $form,
+        ));
     }
 }
