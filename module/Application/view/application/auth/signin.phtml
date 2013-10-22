@@ -1,6 +1,6 @@
  <header>
     <nav class="uk-navbar">
-        <a href="#" class="uk-navbar-brand">PhotoStack</a>
+        <a href="<?php echo $this->url('home'); ?>" class="uk-navbar-brand">PhotoStack</a>
 
         <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
             <a class="uk-button uk-button-success" href="<?php echo $this->url('signin'); ?>"><i class="uk-icon-lock"></i> Login</a>
@@ -10,7 +10,7 @@
 </header><!-- /header -->
 <section class="container">
 </section>
-<div id="login">
+<div id="signin" class="uk-container-center">
     <?php
     $form->setAttribute('action', $this->url('signin'))
     ->prepare();
