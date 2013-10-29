@@ -1,33 +1,51 @@
+<header>
+    <nav class="uk-navbar">
+        <a href="<?php echo $this->url('home'); ?>" class="uk-navbar-brand">PhotoStack</a>
+
+        <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
+            <a class="uk-button uk-button-success" href="<?php echo $this->url('signin'); ?>">
+                <i class="uk-icon-lock"></i> Login</a>
+            <a class="uk-button uk-button-primary" href="<?php echo $this->url('signup'); ?>">
+                <i class="uk-icon-signin"></i> Sign Up</a>
+        </div>
+    </nav>
+</header><!-- /header -->
+<section class="container">
+</section>
 <aside class="gallery-list">
-                <nav>
-                    <div class="uk-button-dropdown" data-uk-dropdown>
-                        <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
-                        <div class="uk-dropdown uk-dropdown-small">
-                            <ul class="uk-nav uk-nav-dropdown">
-                                <?php foreach ($this->users as $user)
-                                {
-                                  echo ("<li><a href='#$user' title='$user'><i class='uk-icon-folder-close'></i> $user</a></li>");
-                                } ?>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </aside>
+    <nav>
+        <div class="uk-button-dropdown" data-uk-dropdown>
+            <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
+            <div class="uk-dropdown uk-dropdown-small">
+                <ul class="uk-nav uk-nav-dropdown">
+                    <?php foreach ($this->users as $user)
+                    {
+                      echo ("<li>
+                        <a href='#".$user['username']."' title='".$user['username']."'>
+                        <i class='uk-icon-folder-close'></i> ".$user['username']."
+                        </a>
+                        </li>");
+                    } ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</aside>
 <?php echo ("<h2 class='uk-text-large gallery-title'>".$this->user."'s gallery</h2>"); ?>
 <section class="photo-panel">
     <ul>
         <?php
-        foreach ($this->images as $imageRow)
+        foreach ($this->images as $image)
         {
             echo ("<li>
-                    <figure class='uk-thumbnail uk-overlay-toggle'>
-                        <div class='uk-overlay'>
-                            <img src='".$imageRow['url']."' alt=''>
-                            <div class='uk-overlay-area'></div>
-                        </div>
-                        <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
-                    </figure>
+                <figure class='uk-thumbnail uk-overlay-toggle'>
+                <div class='uk-overlay'>
+                <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+                <div class='uk-overlay-area'></div>
+                </div>
+                <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
+                </figure>
                 </li>");
-        } ?>
-    </ul>
-</section>
+            } ?>
+        </ul>
+    </section>

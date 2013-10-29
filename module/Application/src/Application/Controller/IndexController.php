@@ -10,9 +10,8 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Db\TableGateway\TableGateway;
-use Zend\Db\Sql;
 use Zend\View\Model\ViewModel;
+use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
 
@@ -30,7 +29,8 @@ class IndexController extends AbstractActionController
      */
     public function getUsersTable()
     {
-        if (!$this->usersTable) {
+        if (!$this->usersTable)
+        {
             $sm = $this->getServiceLocator();
             $this->usersTable = $sm->get('UsersTable');
         }
@@ -67,8 +67,9 @@ class IndexController extends AbstractActionController
         /**
          * Fetching pseudos in a new array
          */
-        foreach ($this->getUsersTable()->getUsersList() as $user) {
-            $userliste[] = $user['pseudo'];
+        foreach ($users as $user)
+        {
+            $userliste[] = $user['username'];
         }
 
         /**
@@ -84,10 +85,11 @@ class IndexController extends AbstractActionController
          */
         $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
+
         return new ViewModel(array(
-            'images' => $imageSet,
-            'user'   => $randomUser,
-            'users'  => $userliste,
+            'images'     => $imageSet,
+            'user'       => $randomUser,
+            'users'      => $this->getUsersTable()->getUsersList(),
             ));
     }
 }

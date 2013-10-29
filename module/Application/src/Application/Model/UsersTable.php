@@ -73,9 +73,9 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $select = new Select();
         $list = $this->select(function ($select)
         {
-            $select->join('images', 'users.pseudo = images.owner')
-            ->where('`images`.owner = `users`.pseudo')
-            ->group('users.pseudo');
+            $select->join('images', 'users.username = images.owner')
+            ->where('`images`.owner = `users`.username')
+            ->group('users.username');
         });
 
         return $list;
@@ -90,15 +90,18 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     {
         $usersList = $this->select(function ($select)
         {
-            $select->columns(array('pseudo'));
+            $select->columns(array('username'));
         });
 
         return $usersList->toArray();
-    }
+     }
 
+<<<<<<< HEAD
     /*
      *  under construction
      */
+=======
+>>>>>>> refactoring
     public function saveUserInfo(Users $users)
     {
         $bcrypt = new Bcrypt();
@@ -111,11 +114,19 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             'mail'     => $users->getMail(),
             'age'      => $users->getAge(),
         );
+<<<<<<< HEAD
 
         echo($random_pwd);
 
         $DBinfo = $this->getUserInfo($users->getMail());
 
+=======
+
+        echo($random_pwd);
+
+        $DBinfo = $this->getUserInfo($users->getMail());
+
+>>>>>>> refactoring
         if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
         }
@@ -131,9 +142,31 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      * @param  int $pseudo user's pseudo
      *
      */
-    public function deleteUser($pseudo)
+    public function deleteUser($mail)
     {
-        $this->delete(array('pseudo' => $pseudo));
+        $this->delete(array('username' => $mail));
+    }
+
+    /**
+     * generatePassword is a method to generate a random
+     * password with a provided length
+     *
+     * @param  integer $length password lenght wanted
+     *
+     * @return string generated password
+     */
+    private function generatePassword($length)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++)
+        {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+
+        return $result;
     }
 
     /**

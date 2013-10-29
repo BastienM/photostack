@@ -7,7 +7,7 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterface
+class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterface
 {
     public function __construct()
     {
@@ -17,16 +17,15 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
 
         $this->setLabel('Users');
 
-        $this->add(array( 
-            'name'       => 'password', 
-            'type'       => 'Zend\Form\Element\Password', 
-            'attributes' => array( 
-                'class'       => 'uk-form-large', 
-                'placeholder' => 'Password', 
-                'required'    => 'required',
-                ), 
-            'options'    => array( 
-                ), 
+        $this->add(array(
+            'name' => 'username',
+            'options' => array(
+                ),
+            'attributes' => array(
+                'class'       => 'uk-form-large',
+                'placeholder' => 'Username', 
+                'required'    => 'required'
+                )
         ));
 
         $this->add(array( 
@@ -40,6 +39,17 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
             'options'    => array( 
                 ), 
         ));
+
+        $this->add(array( 
+            'name'       => 'age',
+            'attributes' => array(
+                'class'       => 'uk-form-large', 
+                'placeholder' => 'Your age', 
+                //'required'    => 'required', 
+                ), 
+            'options'    => array( 
+                ), 
+        ));
     }
 
     /**
@@ -48,7 +58,7 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
     public function getInputFilterSpecification()
     {
         return array(
-            'password' => array(
+            'username' => array(
                 'required' => true,
                 'validators' => array(
                     array(
@@ -58,7 +68,7 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
                         'name' => 'string_length',
                         'options' => array(
                             'min' => 1,
-                            'max' => 50,
+                            'max' => 25,
                         ),
                     ),
                 ),
@@ -74,6 +84,21 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
                         'options' => array(
                             'min' => 1,
                             'max' => 150,
+                        ),
+                    ),
+                ),
+            ),
+            'age' => array(
+                // 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'not_empty',
+                    ),
+                    array(
+                        'name' => 'string_length',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 2,
                         ),
                     ),
                 ),

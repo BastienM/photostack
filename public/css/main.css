@@ -46,5 +46,16 @@ header {
     margin: -5px 0 -10px 0;
 }
 #login-modal, #signup-modal {
-    width: 250px;
+    width: 350px;
+}
+.uk-form-large {
+    width: 310px;
+}
+#signin, #signup {
+    border: 1px rgba(0,0,0,0.2) solid;
+    border-radius: 5px;
+    background-color: #FCFCFC;
+    width: 310px; 
+    padding: 15px;
+    box-shadow: 0 3px 5px 1px rgba(0,0,0,0.1);
 }
