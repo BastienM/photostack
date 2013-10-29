@@ -8,6 +8,7 @@ use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Sql\Select;
+use Zend\Crypt\Password\Bcrypt;
 
 class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
@@ -48,14 +49,14 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array contains all user's info
      */
-    public function getUserInfo($username)
+    public function getUserInfo($mail)
     {
-        $username  = $username;
-        $rowset = $this->select(array('username' => $username));
+        $mail  = $mail;
+        $rowset = $this->select(array('mail' => $mail));
         $row = $rowset->current();
 
         if (!$row) {
-            throw new \Exception("Could not find user $username");
+            return false;
         }
 
         return $row;
@@ -67,7 +68,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array usernames list
      */
-    public function getUsersOwningPhoto()
+    public function getUsersOwningPhotoList()
     {
         $select = new Select();
         $list = $this->select(function ($select)
@@ -85,7 +86,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array users list
      */
-    public function getUserList()
+    public function getUsersList()
     {
         $usersList = $this->select(function ($select)
         {
@@ -93,44 +94,64 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         });
 
         return $usersList->toArray();
-    }
+     }
 
-    /*
-     *  under construction
-     * 
     public function saveUserInfo(Users $users)
     {
+        $bcrypt = new Bcrypt();
+
+        $random_pwd = $this->generatePassword(12);
+
         $data = array(
-            'username'   => $users->username,
-            'password' => $users->password,
-            'mail'     => $users->mail,
-            'age'      => $users->age,
-            );
+            'username' => $users->getUsername(),
+            'password' => $bcrypt->create($random_pwd),
+            'mail'     => $users->getMail(),
+            'age'      => $users->getAge(),
+        );
 
-        $username = (string)$users->username;
+        echo($random_pwd);
 
-        if ($this->getUserInfo($username) == null) {
+        $DBinfo = $this->getUserInfo($users->getMail());
+
+        if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
-        } elseif ($this->getUserInfo($username) !== null) {
-            $this->update(
-                $data,
-                array(
-                    'username' => $username,
-                    )
-                );
-        } else {
-            throw new \Exception('Form username does not exist');
         }
-    }*/
+        else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'])
+        {
+            echo('Mail already associated with an account');
+        }
+    }
 
     /**
      * deleteUser delete the user account whose username is provided
      *
-     * @param  int $username user's username
+     * @param  int $pseudo user's pseudo
      *
      */
-    public function deleteUser($username)
+    public function deleteUser($mail)
     {
-        $this->delete(array('username' => $username));
+        $this->delete(array('username' => $mail));
+    }
+
+    /**
+     * generatePassword is a method to generate a random
+     * password with a provided length
+     *
+     * @param  integer $length password lenght wanted
+     *
+     * @return string generated password
+     */
+    private function generatePassword($length)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++)
+        {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+
+        return $result;
     }
 }

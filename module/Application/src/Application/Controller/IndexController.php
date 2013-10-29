@@ -62,7 +62,7 @@ class IndexController extends AbstractActionController
          *
          * @var array
          */
-        $users = $this->getUsersTable()->getUsersOwningPhoto();
+        $users = $this->getUsersTable()->getUsersOwningPhotoList();
 
         /**
          * Fetching pseudos in a new array
@@ -89,7 +89,7 @@ class IndexController extends AbstractActionController
         return new ViewModel(array(
             'images'     => $imageSet,
             'user'       => $randomUser,
-            'users'      => $this->getUsersTable()->getUserList()
+            'users'      => $this->getUsersTable()->getUsersList(),
             ));
     }
 }
