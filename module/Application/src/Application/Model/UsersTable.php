@@ -8,6 +8,7 @@ use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Sql\Select;
+use Zend\Crypt\Password\Bcrypt;
 
 class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
@@ -48,14 +49,14 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return array contains all user's info
      */
-    public function getUserInfo($pseudo)
+    public function getUserInfo($mail)
     {
-        $pseudo  = $pseudo;
-        $rowset = $this->select(array('pseudo' => $pseudo));
+        $mail  = $mail;
+        $rowset = $this->select(array('mail' => $mail));
         $row = $rowset->current();
 
         if (!$row) {
-            throw new \Exception("Could not find user $pseudo");
+            return false;
         }
 
         return $row;
@@ -97,31 +98,32 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 
     /*
      *  under construction
-     * 
+     */
     public function saveUserInfo(Users $users)
     {
+        $bcrypt = new Bcrypt();
+
+        $random_pwd = $this->generatePassword(12);
+
         $data = array(
-            'pseudo'   => $users->pseudo,
-            'password' => $users->password,
-            'mail'     => $users->mail,
-            'age'      => $users->age,
-            );
+            'username' => $users->getUsername(),
+            'password' => $bcrypt->create($random_pwd),
+            'mail'     => $users->getMail(),
+            'age'      => $users->getAge(),
+        );
 
-        $pseudo = (string)$users->pseudo;
+        echo($random_pwd);
 
-        if ($this->getUserInfo($pseudo) == null) {
+        $DBinfo = $this->getUserInfo($users->getMail());
+
+        if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
-        } elseif ($this->getUserInfo($pseudo) !== null) {
-            $this->update(
-                $data,
-                array(
-                    'pseudo' => $pseudo,
-                    )
-                );
-        } else {
-            throw new \Exception('Form pseudo does not exist');
         }
-    }*/
+        else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'])
+        {
+            echo('Mail already associated with an account');
+        }
+    }
 
     /**
      * deleteUser delete the user account whose username is provided
@@ -132,5 +134,27 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function deleteUser($pseudo)
     {
         $this->delete(array('pseudo' => $pseudo));
+    }
+
+    /**
+     * generatePassword is a method to generate a random
+     * password with a provided length
+     *
+     * @param  integer $length password lenght wanted
+     *
+     * @return string generated password
+     */
+    private function generatePassword($length)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++)
+        {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+
+        return $result;
     }
 }
