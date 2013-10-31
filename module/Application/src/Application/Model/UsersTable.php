@@ -109,12 +109,11 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             'age'      => $users->getAge(),
         );
 
-        echo($random_pwd);
-
         $DBinfo = $this->getUserInfo($users->getMail());
 
         if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
+            echo($data['password']);
         }
         else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'])
         {

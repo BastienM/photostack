@@ -14,6 +14,8 @@ use Zend\View\Model\ViewModel;
 use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
 
 class IndexController extends AbstractActionController
 {
@@ -23,7 +25,7 @@ class IndexController extends AbstractActionController
     /**
      * getUsersTable is method which allow us to
      * use UsersTable (TableGateway object)
-     * dynamicly through the Service Manager 
+     * dynamically through the Service Manager
      *
      * @return object TableGateway instance of UsersTable
      */
@@ -56,6 +58,56 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
+        /*
+         * Opening session
+         */
+        $manager = new SessionManager();
+        $manager->start();
+        
+        /*
+         * Using user's namespace session
+         */
+        $userSession = new Container('user');
+        
+        /*
+         * Verifying if user is already logged in to select which
+         * menu items to draw
+         */
+        if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
+        {
+            $menubarItems = array(
+                    'account' => array(
+                        'class' => 'uk-button uk-button-primary',
+                        'url'      => 'home',
+                        'icon'     => '',
+                        'text'     => ' Account'
+                    ),
+                    'logout' => array(
+                        'class' => '',
+                        'url'      => 'logout',
+                        'icon'     => '',
+                        'text'     => ' Log Out'
+                    )
+            ); 
+        }
+        else 
+        {
+            $menubarItems = array(
+                    'signin' => array(
+                        'class' => 'uk-button uk-button-success',
+                        'url'      => 'signin',
+                        'icon'     => 'uk-icon-lock',
+                        'text'     => ' Sign In'
+                    ),
+                    'signup' => array(
+                        'class' => 'uk-button uk-button-primary',
+                        'url'      => 'signup',
+                        'icon'     => 'uk-icon-signin',
+                        'text'     => ' Sign Up'
+                    )
+            );
+        }
+
         /**
          * $users contains the list of all users
          * who has upload at least one image
@@ -87,9 +139,10 @@ class IndexController extends AbstractActionController
 
 
         return new ViewModel(array(
-            'images'     => $imageSet,
-            'user'       => $randomUser,
-            'users'      => $this->getUsersTable()->getUsersList(),
+            'menubarItems'    => $menubarItems,
+            'images'          => $imageSet,
+            'user'            => $randomUser,
+            'usersList'       => $this->getUsersTable()->getUsersList(),
             ));
     }
 }

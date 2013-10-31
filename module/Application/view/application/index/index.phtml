@@ -3,10 +3,10 @@
         <a href="<?php echo $this->url('home'); ?>" class="uk-navbar-brand">PhotoStack</a>
 
         <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
-            <a class="uk-button uk-button-success" href="<?php echo $this->url('signin'); ?>">
-                <i class="uk-icon-lock"></i> Login</a>
-            <a class="uk-button uk-button-primary" href="<?php echo $this->url('signup'); ?>">
-                <i class="uk-icon-signin"></i> Sign Up</a>
+            <?php foreach ($this->menubarItems as $item)
+            {
+                echo ('<a class="'.$item['class'].'" href="'.$this->url($item['url']).'"><i class="'.$item['icon'].'"></i>'.$item['text'].'</a>&nbsp;');
+            } ?>
         </div>
     </nav>
 </header><!-- /header -->
@@ -18,7 +18,7 @@
             <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
             <div class="uk-dropdown uk-dropdown-small">
                 <ul class="uk-nav uk-nav-dropdown">
-                    <?php foreach ($this->users as $user)
+                    <?php foreach ($this->usersList as $user)
                     {
                       echo ("<li>
                         <a href='#".$user['username']."' title='".$user['username']."'>
