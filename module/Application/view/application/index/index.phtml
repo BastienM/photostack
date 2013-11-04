@@ -1,51 +1,64 @@
 <header>
-    <nav class="uk-navbar">
-        <a href="<?php echo $this->url('home'); ?>" class="uk-navbar-brand">PhotoStack</a>
-
-        <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
-            <?php foreach ($this->menubarItems as $item)
-            {
-                echo ('<a class="'.$item['class'].'" href="'.$this->url($item['url']).'"><i class="'.$item['icon'].'"></i>'.$item['text'].'</a>&nbsp;');
-            } ?>
-        </div>
-    </nav>
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="<?php echo $this->url('home'); ?>">Photostack</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <form id="loginForm" class="navbar-form navbar-right">
+          <div class="form-group">
+            <input type="text" placeholder="Email" class="input-sm form-control">
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Password" class="input-sm form-control">
+          </div>
+          <button type="submit" class="btn btn-success btn-sm">Sign In</button>
+          <a class="btn btn-info btn-sm" href="<?php echo $this->url('signin'); ?>"> Register</a>
+        </form>
+      </div>
+    </div><!--/.navbar-collapse -->
+  </nav>
 </header><!-- /header -->
 <section class="container">
 </section>
-<aside class="gallery-list">
-    <nav>
-        <div class="uk-button-dropdown" data-uk-dropdown>
-            <button class="uk-button" type="submit"><i class="uk-icon-picture"></i>  Galleries</button>
-            <div class="uk-dropdown uk-dropdown-small">
-                <ul class="uk-nav uk-nav-dropdown">
-                    <?php foreach ($this->usersList as $user)
-                    {
-                      echo ("<li>
-                        <a href='#".$user['username']."' title='".$user['username']."'>
-                        <i class='uk-icon-folder-close'></i> ".$user['username']."
-                        </a>
-                        </li>");
-                    } ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</aside>
-<?php echo ("<h2 class='uk-text-large gallery-title'>".$this->user."'s gallery</h2>"); ?>
-<section class="photo-panel">
-    <ul>
-        <?php
-        foreach ($this->images as $image)
-        {
-            echo ("<li>
-                <figure class='uk-thumbnail uk-overlay-toggle'>
-                <div class='uk-overlay'>
-                <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
-                <div class='uk-overlay-area'></div>
-                </div>
-                <figcaption class='uk-thumbnail-caption'><small>Un chat</small></figcaption>
-                </figure>
-                </li>");
-            } ?>
-        </ul>
+<aside class="col-xs-3 .col-md-5">
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-camera"></i> Galleries
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <?php foreach ($this->usersList as $user)
+      {
+        echo ("<li>
+          <a href='#".$user['username']."' title='".$user['username']."'>
+          <i class='fa fa-folder-open'></i> ".$user['username']."
+          </a>
+          </li>");
+        } ?>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="col-xs-12 col-sm-6 col-md-8" id="gallery">
+    <div class="page-header">
+      <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
+    </div>
+    <div class="row">
+      <?php
+      foreach ($this->images as $image)
+      {
+        echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
+          <a href='".$image['url']."' class='thumbnail'>
+          <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+          </a>
+          </figure>");
+        } ?>
+      </div>
     </section>

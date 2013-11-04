@@ -11,8 +11,8 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Applciation\Model\UsersTable;
-use Applciation\Model\ImagesTable;
+use Application\Model\UsersTable;
+use Application\Model\ImagesTable;
 
 class Module
 {

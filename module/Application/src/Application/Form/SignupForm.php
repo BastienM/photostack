@@ -32,7 +32,7 @@ class SignupForm extends Form
             'name'       => 'submit',
             'type'       => 'submit', 
             'attributes' => array( 
-                'class' => 'uk-button uk-button-expand uk-button-large',
+                'class' => 'btn btn-lg btn-info btn-block',
                 'value' => 'SIGN UP',
                 ), 
             'options'    => array( 

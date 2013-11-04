@@ -22,7 +22,7 @@ class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterfa
             'options' => array(
                 ),
             'attributes' => array(
-                'class'       => 'uk-form-large',
+                'class'       => 'form-control',
                 'placeholder' => 'Username', 
                 'required'    => 'required'
                 )
@@ -32,7 +32,7 @@ class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterfa
             'name'       => 'mail', 
             'type'       => 'Zend\Form\Element\Email', 
             'attributes' => array(
-                'class'       => 'uk-form-large', 
+                'class'       => 'form-control', 
                 'placeholder' => 'your@mail.com', 
                 'required'    => 'required', 
                 ), 
@@ -43,9 +43,9 @@ class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterfa
         $this->add(array( 
             'name'       => 'age',
             'attributes' => array(
-                'class'       => 'uk-form-large', 
+                'class'       => 'form-control', 
                 'placeholder' => 'Your age', 
-                //'required'    => 'required', 
+                'required'    => 'required', 
                 ), 
             'options'    => array( 
                 ), 

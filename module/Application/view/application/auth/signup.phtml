@@ -1,38 +1,51 @@
- <header>
-    <nav class="uk-navbar">
-        <a href="<?php echo $this->url('home'); ?>" class="uk-navbar-brand">PhotoStack</a>
-
-        <div class="uk-navbar-content uk-navbar-flip  uk-hidden-small">
-            <a class="uk-button uk-button-success" href="<?php echo $this->url('signin'); ?>"><i class="uk-icon-lock"></i> Login</a>
-            <a class="uk-button uk-button-primary" href="<?php echo $this->url('signup'); ?>"><i class="uk-icon-signin"></i> Sign Up</a>
+<header>
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="<?php echo $this->url('home'); ?>">Photostack</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <div class="navbar-form navbar-right">
+          <a class="btn btn-success btn-sm" href="<?php echo $this->url('signin'); ?>"> Sign In</a>
+          <a class="btn btn-info btn-sm" href="<?php echo $this->url('signup'); ?>"> Register</a>
         </div>
-    </nav>
+      </div>
+    </div><!--/.navbar-collapse -->
+  </nav>
 </header><!-- /header -->
 <section class="container">
 </section>
-<div id="signup" class="uk-container-center">
+<div id="form" class="form-signin">
     <?php
     $form->setAttribute('action', $this->url('signup'))
-         ->prepare();
-
+    ->prepare();
     echo $this->form()->openTag($form);
     $users = $form->get('users');
     ?>
-    <h3><i class="uk-icon-bookmark"></i> SIGN UP</h3>
+    <h2 class="form-signin-heading">Want to sign up ?</h2>
     <hr>
     <?
-    echo "<div class='uk-form-row'>";
+    echo "<div class='form-group'>";
     echo $this->formRow($users->get('mail'));
     echo "</div>";
-    echo "<div class='uk-form-row'>";
+    echo "<div class='form-group'>";
     echo $this->formRow($users->get('username'));
     echo "</div>";
-    echo "<div class='uk-form-row'>";
+    echo "<div class='form-group'>";
     echo $this->formRow($users->get('age'));
     echo "</div>";
-    echo "<div class='uk-form-row'>";
+    echo "<div class='form-group'>";
     echo $this->formElement($form->get('submit'));
     echo "</div>";
+    echo "<div class='form-group'>";
     echo $this->formHidden($form->get('csrf'));
     echo $this->form()->closeTag(); ?>
-</div>
+    <a class="btn btn-link btn-sm" id="btn-return" href="<?php echo $this->url('home'); ?>"><i class="fa fa-angle-double-right"></i> back to home</a>
+  </div>
+</section>

@@ -79,7 +79,7 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     /*
      * under construction
      * 
-    public function saveUserInfo(Users $users)
+    public function saveImageInfo(Users $users)
     {
         $data = array(
             'pseudo'   => $users->pseudo

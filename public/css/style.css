@@ -1,0 +1,59 @@
+#loginForm input {
+    width: 125px;
+}
+#loginForm input[type='password'] {
+    margin-right: 10px
+}
+#loginForm a {
+    margin-left: 10px;
+}
+aside {
+    margin-top: 99px;
+}
+#gallery .thumbnail {
+    width: 160px;
+}
+#gallery figcaption {
+    background: #F8F8F8;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0, 0.1);
+    margin-bottom: 50px;
+}
+#gallery figcaption p {
+    margin-bottom: -15px;
+    text-align: center;
+}
+#gallery figcaption hr {
+    margin-bottom: -1px;
+}
+#gallery figcaption ul {
+    list-style: none;
+}
+#gallery figcaption li {
+    display: inline-block;
+    margin-bottom: -10px;
+}
+#gallery figcaption li:first-child {
+    margin-left: -20px;
+    margin-right: 20px;
+}
+#form {
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 40px;
+    width:300px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 5px;
+    background-color: #FCFCFC;
+    padding: 10px;
+}
+#form h2 {
+    color: #5E5E64;
+    text-align: center;
+}
+#btn-return {
+    margin-top: 10px;
+    margin-bottom: -15px;
+    margin-left: 180px;
+}

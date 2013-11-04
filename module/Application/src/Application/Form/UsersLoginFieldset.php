@@ -21,7 +21,7 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
             'name'       => 'password', 
             'type'       => 'Zend\Form\Element\Password', 
             'attributes' => array( 
-                'class'       => 'uk-form-large', 
+                'class'       => 'form-control', 
                 'placeholder' => 'Password', 
                 'required'    => 'required',
                 ), 
@@ -33,7 +33,7 @@ class UsersLoginFieldset extends Fieldset implements InputFilterProviderInterfac
             'name'       => 'mail', 
             'type'       => 'Zend\Form\Element\Email', 
             'attributes' => array(
-                'class'       => 'uk-form-large', 
+                'class'       => 'form-control', 
                 'placeholder' => 'your@mail.com', 
                 'required'    => 'required', 
                 ), 

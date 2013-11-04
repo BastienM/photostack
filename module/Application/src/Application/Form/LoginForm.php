@@ -16,6 +16,9 @@ class LoginForm extends Form
              ->setHydrator(new ClassMethodsHydrator(false))
              ->setInputFilter(new InputFilter());
 
+        /**
+         * We imports our inputs from the Fieldset
+         */
         $this->add(array(
             'type' => 'Application\Form\UsersLoginFieldset',
             'options' => array(
@@ -23,6 +26,9 @@ class LoginForm extends Form
             )
         ));
 
+        /**
+         * And we add our submit button and a Csrf generator
+         */
         $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'csrf'
@@ -32,8 +38,8 @@ class LoginForm extends Form
             'name'       => 'submit',
             'type'       => 'submit', 
             'attributes' => array( 
-                'class' => 'uk-button uk-button-expand uk-button-large',
-                'value' => 'LOGIN',
+                'class' => 'btn btn-lg btn-success btn-block',
+                'value' => 'Let me in',
             ),
         ));
     }
