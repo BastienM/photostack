@@ -119,7 +119,7 @@ class AuthController extends AbstractActionController
                     /*
                      * Redirection the user to the index
                      */
-                    $this->redirect()->toRoute('home');
+                    $this->redirect()->toRoute('logged');
                 }
                 else
                 {

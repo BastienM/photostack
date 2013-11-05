@@ -12,22 +12,8 @@
       </div>
       <div class="navbar-collapse collapse" id="loginForm">
         <div class='navbar-form navbar-right'>
-          <?php
-          $form->setAttribute('action', $this->url('signin'))
-          ->prepare();
-          echo $this->form()->openTag($form);
-          $users = $form->get('users');
-          echo "<div class='form-group'>";
-          echo $this->formRow($users->get('mail'));
-          echo "</div>";
-          echo "<div class='form-group'>";
-          echo $this->formRow($users->get('password'));
-          echo "</div>";
-          echo "<div class='form-group'>";
-          echo $this->formElement($form->get('submit'));
-          echo $this->formHidden($form->get('csrf'));
-          echo $this->form()->closeTag(); ?>
-          <a href='<?php echo $this->url('signup') ?>'><button class='btn btn-primary btn-sm' id="register">Register</button></a>
+          <a href='<?php echo $this->url('home') ?>'><button class='btn btn-success btn-sm' type='submit'><i class="fa fa-user"></i>&nbsp;&nbsp;My account</button></a>
+          <a href='<?php echo $this->url('logout') ?>'><button class='btn btn-danger btn-sm' type='submit'><i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;Log out</button></a>
         </div>
       </div>
     </div><!--/.navbar-collapse -->

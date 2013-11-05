@@ -20,6 +20,16 @@ return array(
                     ),
                 ),
             ),
+            'logged' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/logged',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'logged',
+                    ),
+                ),
+            ),
             'signin' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

@@ -1,11 +1,16 @@
-#loginForm input {
-    width: 125px;
+#loginForm input[type='password'], #loginForm input[type='email']  {
+    width: 175px;
 }
 #loginForm input[type='password'] {
-    margin-right: 10px
+    margin-right: 10px;
+    margin-left:  5px;
 }
 #loginForm a {
     margin-left: 10px;
+}
+#register {
+    height: 26px;
+    line-height: 8px;
 }
 aside {
     margin-top: 99px;

@@ -11,10 +11,11 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Form\Factory;
 use Application\Model\Users;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
-use Application\Form\LoginForm;
+use Application\Form\MainLoginForm;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
@@ -69,85 +70,117 @@ class IndexController extends AbstractActionController
          * Using user's namespace session
          */
         $userSession = new Container('user');
-        
-        /*
-         * Verifying if user is already logged in to select which
-         * menu items to draw
-         */
+
         if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
         {
-            $menubarItems = array(
-                'account' => array(
-                    'class' => 'uk-button uk-button-primary',
-                    'url'      => 'home',
-                    'icon'     => '',
-                    'text'     => ' Account'
-                    ),
-                'logout' => array(
-                    'class' => '',
-                    'url'      => 'logout',
-                    'icon'     => '',
-                    'text'     => ' Log Out'
-                    )
-                ); 
-        }
-        else 
-        {
-            $menubarItems = array(
-                'signin' => array(
-                    'class' => 'uk-button uk-button-success',
-                    'url'      => 'signin',
-                    'icon'     => 'uk-icon-lock',
-                    'text'     => ' Sign In'
-                    ),
-                'signup' => array(
-                    'class' => 'uk-button uk-button-primary',
-                    'url'      => 'signup',
-                    'icon'     => 'uk-icon-signin',
-                    'text'     => ' Sign Up'
-                    )
-                );
+            // $this->redirect()->toRoute('logged');
         }
 
-        $form  = new LoginForm();
+        /**
+         * Initializing Login Form and the needed
+         * components
+         */
+        $form  = new MainLoginForm();
         $users = new Users();
         $form->bind($users);
 
         /**
-         * $users contains the list of all users
-         * who has upload at least one image
-         *
-         * @var array
-         */
-        $users = $this->getUsersTable()->getUsersOwningPhotoList();
+        * $users contains the list of all users
+        * who has upload at least one image
+        *
+        * @var array
+        */
+        $galleriesList = $this->getUsersTable()->getUsersOwningPhotoList();
 
         /**
-         * Fetching pseudos in a new array
-         */
-        foreach ($users as $user)
+        * Fetching pseudos in a new array
+        */
+        foreach ($galleriesList as $user)
         {
             $userliste[] = $user['username'];
         }
 
         /**
-         * $username equal the randomly selected user
-         * through $userliste index keys
-         * 
-         * @var string
-         */
+        * $username equal the randomly selected user
+        * through $userliste index keys
+        * 
+        * @var string
+        */
         $randomUser = $userliste[array_rand($userliste)];
 
         /*
-         * Picking up only the photos whose are owned by the selected user
-         */
+        * Picking up only the photos whose are owned by the selected user
+        */
         $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
         return new ViewModel(array(
-            'menubarItems'    => $menubarItems,
             'form'            => $form,
             'images'          => $imageSet,
             'user'            => $randomUser,
             'usersList'       => $this->getUsersTable()->getUsersList(),
             ));
+    }
+
+    public function loggedAction()
+    {
+
+        /*
+         * Opening session
+         */
+        $manager = new SessionManager();
+        $manager->start();
+
+        /*
+         * Using user's namespace session
+         */
+        $userSession = new Container('user');
+
+        /**
+         * Initializing Login Form and the needed
+         * components
+         */
+        $form  = new MainLoginForm();
+        $users = new Users();
+        $form->bind($users);
+
+        /**
+        * $users contains the list of all users
+        * who has upload at least one image
+        *
+        * @var array
+        */
+        $galleriesList = $this->getUsersTable()->getUsersOwningPhotoList();
+
+        /**
+        * Fetching pseudos in a new array
+        */
+        foreach ($galleriesList as $user)
+        {
+            $userliste[] = $user['username'];
+        }
+
+        /**
+        * $username equal the randomly selected user
+        * through $userliste index keys
+        * 
+        * @var string
+        */
+        $randomUser = $userliste[array_rand($userliste)];
+
+        /*
+        * Picking up only the photos whose are owned by the selected user
+        */
+        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
+
+        $view = new ViewModel(array(
+            'form'            => $form,
+            'images'          => $imageSet,
+            'user'            => $randomUser,
+            'usersList'       => $this->getUsersTable()->getUsersList(),
+            ));
+
+        $view->setTemplate('application/index/logged.phtml');
+
+        return $view;
     }
 }
