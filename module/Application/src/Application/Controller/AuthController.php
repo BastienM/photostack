@@ -119,7 +119,9 @@ class AuthController extends AbstractActionController
                     /*
                      * Redirection the user to the index
                      */
-                    $this->redirect()->toRoute('logged');
+                    // $this->redirect()->toRoute('home');
+                    $url = $this->getRequest()->getHeader('Referer')->getUri();
+                    $this->redirect()->toUrl($url);
                 }
                 else
                 {

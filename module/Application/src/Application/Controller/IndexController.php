@@ -71,70 +71,6 @@ class IndexController extends AbstractActionController
          */
         $userSession = new Container('user');
 
-        if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
-        {
-            // $this->redirect()->toRoute('logged');
-        }
-
-        /**
-         * Initializing Login Form and the needed
-         * components
-         */
-        $form  = new MainLoginForm();
-        $users = new Users();
-        $form->bind($users);
-
-        /**
-        * $users contains the list of all users
-        * who has upload at least one image
-        *
-        * @var array
-        */
-        $galleriesList = $this->getUsersTable()->getUsersOwningPhotoList();
-
-        /**
-        * Fetching pseudos in a new array
-        */
-        foreach ($galleriesList as $user)
-        {
-            $userliste[] = $user['username'];
-        }
-
-        /**
-        * $username equal the randomly selected user
-        * through $userliste index keys
-        * 
-        * @var string
-        */
-        $randomUser = $userliste[array_rand($userliste)];
-
-        /*
-        * Picking up only the photos whose are owned by the selected user
-        */
-        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
-
-        return new ViewModel(array(
-            'form'            => $form,
-            'images'          => $imageSet,
-            'user'            => $randomUser,
-            'usersList'       => $this->getUsersTable()->getUsersList(),
-            ));
-    }
-
-    public function loggedAction()
-    {
-
-        /*
-         * Opening session
-         */
-        $manager = new SessionManager();
-        $manager->start();
-
-        /*
-         * Using user's namespace session
-         */
-        $userSession = new Container('user');
-
         /**
          * Initializing Login Form and the needed
          * components
@@ -179,8 +115,13 @@ class IndexController extends AbstractActionController
             'usersList'       => $this->getUsersTable()->getUsersList(),
             ));
 
-        $view->setTemplate('application/index/logged.phtml');
 
+
+        if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
+        {
+            $view->setTemplate('application/index/logged.phtml');
+        }
+        
         return $view;
     }
 }
