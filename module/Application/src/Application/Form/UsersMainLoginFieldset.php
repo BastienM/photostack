@@ -21,9 +21,10 @@ class UsersMainLoginFieldset extends Fieldset implements InputFilterProviderInte
             'name'       => 'password', 
             'type'       => 'Zend\Form\Element\Password', 
             'attributes' => array( 
-                'class'       => 'input-sm form-control', 
-                'placeholder' => 'Password', 
-                'required'    => 'required',
+                'class'        => 'input-sm form-control', 
+                'placeholder'  => 'Password', 
+                'required'     => 'required',
+                'autocomplete' => 'off',
                 ), 
             'options'    => array( 
                 ), 
@@ -33,9 +34,10 @@ class UsersMainLoginFieldset extends Fieldset implements InputFilterProviderInte
             'name'       => 'mail', 
             'type'       => 'Zend\Form\Element\Email', 
             'attributes' => array(
-                'class'       => 'input-sm form-control', 
-                'placeholder' => 'your@mail.com', 
-                'required'    => 'required', 
+                'class'        => 'input-sm form-control', 
+                'placeholder'  => 'your@mail.com', 
+                'required'     => 'required', 
+                'autocomplete' => 'off',
                 ), 
             'options'    => array( 
                 ), 

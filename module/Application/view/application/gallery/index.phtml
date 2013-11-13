@@ -13,7 +13,7 @@
       <div class="navbar-collapse collapse" id="loginForm">
         <ul class="nav navbar-nav">
           <li><a href="<?php echo $this->url('home'); ?>">Home</a></li>
-          <li class="dropdown">
+          <li class="dropdown active">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galleries <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <?php foreach ($this->usersList as $user)
@@ -30,41 +30,43 @@
             </ul>
           </li>
         </ul>
-        <div class="navbar-form navbar-right">
-          <a class="btn btn-info btn-sm" href="<?php echo $this->url('signup'); ?>"> Register</a>
+        <div class='navbar-form navbar-right'>
+          <?php
+          $form->setAttribute('action', $this->url('signin'))
+          ->prepare();
+          echo $this->form()->openTag($form);
+          $users = $form->get('users');
+          echo "<div class='form-group'>";
+          echo $this->formRow($users->get('mail'));
+          echo "</div>";
+          echo "<div class='form-group'>";
+          echo $this->formRow($users->get('password'));
+          echo "</div>";
+          echo "<div class='form-group'>";
+          echo $this->formElement($form->get('submit'));
+          echo $this->formHidden($form->get('csrf'));
+          echo $this->form()->closeTag(); ?>
+          <a href='<?php echo $this->url('signup') ?>'><button class='btn btn-primary btn-sm' id="register">Register</button></a>
         </div>
       </div>
     </div><!--/.navbar-collapse -->
   </nav>
 </header><!-- /header -->
 <section class="container">
-  <div id="form" class="form-signin">
-    <?php
-    $form->setAttribute('action', $this->url('signin'))
-    ->prepare();
-    echo $this->form()->openTag($form);
-    $users = $form->get('users');
-    ?>
-    <h2 class="form-signin-heading">Please sign in</h2>
-    <hr>
-    <?php
-    echo "<div class='form-group'>";
-    echo $this->formRow($users->get('mail'));
-    echo "</div>";
-    echo "<div class='form-group'>";
-    echo $this->formRow($users->get('password'));
-    echo "</div>";
-    if (isset($this->error)) {
-      echo "<div class='alert alert-danger alert-dismissable'>
-              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-              ".$this->error."
-            </div>";
-    }
-    echo "<div class='form-group'>";
-    echo $this->formElement($form->get('submit'));
-    echo "<div class='form-group'>";
-    echo $this->formHidden($form->get('csrf'));
-    echo $this->form()->closeTag(); ?>
-    <a class="btn btn-link btn-sm" id="btn-return" href="<?php echo $this->url('home'); ?>"><i class="fa fa-angle-double-right"></i> return to home</a>
-  </div>
+  <section class="" id="gallery">
+    <div class="page-header">
+      <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
+    </div>
+    <div class="row">
+      <?php
+      foreach ($this->images as $image)
+      {
+        echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
+          <a href='".$image['url']."' class='thumbnail fancybox'>
+            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+          </a>
+        </figure>");
+      } ?>
+    </div>
+  </section>
 </section>

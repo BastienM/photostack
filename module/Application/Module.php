@@ -13,6 +13,7 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Application\Model\UsersTable;
 use Application\Model\ImagesTable;
+use Application\Model\AuthentificationTable;
 
 class Module
 {
@@ -50,8 +51,9 @@ class Module
                }
                ),
             'invokables' => array(
-                'UsersTable'  =>  'Application\Model\UsersTable',
-                'ImagesTable' =>  'Application\Model\ImagesTable'
+                'UsersTable'            =>  'Application\Model\UsersTable',
+                'ImagesTable'           =>  'Application\Model\ImagesTable',
+                'AuthentificationTable' =>  'Application\Model\AuthentificationTable',
                 ),
             );
     }

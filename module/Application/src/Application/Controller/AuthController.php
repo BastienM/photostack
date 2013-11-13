@@ -16,12 +16,15 @@ use Zend\Session\SessionManager;
 use Zend\Session\Container;
 use Application\Model\Users;
 use Application\Model\UsersTable;
+use Application\Model\Authentification;
+use Application\Model\AuthentificationTable;
 use Application\Form\LoginForm;
 use Application\Form\SignupForm;
 
 class AuthController extends AbstractActionController
 {
     protected $usersTable;
+    protected $authentificationTable;
 
     /**
      * getUsersTable is method which allow us to
@@ -40,8 +43,46 @@ class AuthController extends AbstractActionController
         return $this->usersTable;
     }
 
+    public function getAuthentificationTable()
+    {
+        if (!$this->authentificationTable)
+        {
+            $sm = $this->getServiceLocator();
+            $this->authentificationTable = $sm->get('AuthentificationTable');
+        }
+        return $this->authentificationTable;
+    }
+
     public function signinAction()
     {
+
+        /*
+         * Opening session
+         */
+        $manager = new SessionManager();
+        $manager->start();
+
+        /*
+         * Using user's namespace session
+         */
+        $userSession = new Container('user');
+
+        /**
+         * Saving the page which user is coming from
+         */
+        if  (!$userSession->offsetExists('lastUri'))
+        {
+            $userSession->lastUri = $this->getRequest()->getHeader('Referer')->getUri();
+        }
+
+        /**
+         * If user is already logged, we redirect him from where he come from
+         */
+        if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
+        {
+            $this->redirect()->toUrl($userSession->lastUri);
+        }
+
         /**
          * Initializing Login Form and the needed
          * components
@@ -81,58 +122,94 @@ class AuthController extends AbstractActionController
                 $users->exchangeArray($data['users']);
 
                 /**
-                 * $userDB return an array containing User's infos
-                 *
-                 * @var array
+                 * Retrieving info about user authentification logs
                  */
-                $userDB = $this->getUsersTable()->getUserInfo($users->getMail());
+                $authInfo = $this->getAuthentificationTable()->getUserAuthInfo($users->getMail());
+                
+                /**
+                 * If he hasn't any yet, we create him one
+                 */
+                if(!isset($authInfo) || $authInfo == null) {
 
-                /*
-                 * Bcrypt allow us to verify that the plain password equal
-                 * the one crypted in the Database
-                 */
-                $bcrypt = new Bcrypt();
+                    $this->getAuthentificationTable()->createLog($users->getMail());
+                }
 
                 /**
-                 * Checking if our hashed password in the Database matchs the one
-                 * provided by the form
+                 * If the user failed 3 times to login
                  */
-                if ($bcrypt->verify($users->getPassword(), $userDB['password']))
-                {
-                    /*
-                     * Opening session
+                if($authInfo['numberTry'] >= 3) {
+
+                    $error = "<strong><small><i class='fa fa-lock'></i></strong> Your is now locked.</small>";
+
+                    /**
+                     * If the account hasn't been locked yet
                      */
-                    $manager = new SessionManager();
-                    $manager->start();
+                    if ($authInfo['isBlocked'] !== 1) {
+
+                        $this->getAuthentificationTable()->blockAccount($users->getMail());
+                    }
+
+                } else {
+
+                    /**
+                     * $userDB return an array containing User's infos
+                     *
+                     * @var array
+                     */
+                    $userDB = $this->getUsersTable()->getUserInfo($users->getMail());
 
                     /*
-                     * Using user's namespace session
+                     * Bcrypt allow us to verify that the plain password equal
+                     * the one crypted in the Database
                      */
-                    $userSession = new Container('user');
+                    $bcrypt = new Bcrypt();
 
-                    /*
-                     * Setting infos in the session
+                    /**
+                     * Checking if our hashed password in the Database matchs the one
+                     * provided by the form
                      */
-                    $userSession->isLogged = true;
-                    $userSession->mail = $users->getMail();
+                    if ($bcrypt->verify($users->getPassword(), $userDB['password']))
+                    {
+                        /*
+                         * Setting infos in the session
+                         */
+                        $userSession->isLogged = true;
+                        $userSession->mail = $users->getMail();
+                        
+                        /*
+                         * Redirection the user to the index
+                         */
+                        // $this->redirect()->toRoute('home');
+                        $this->redirect()->toUrl($userSession->lastUri);
 
-                    /*
-                     * Redirection the user to the index
-                     */
-                    // $this->redirect()->toRoute('home');
-                    $url = $this->getRequest()->getHeader('Referer')->getUri();
-                    $this->redirect()->toUrl($url);
-                }
-                else
-                {
-                    echo "The password is NOT correct.\n";
+                    } else {
+                        /*
+                         * We add the failed failed to his counter
+                         */
+                        $this->getAuthentificationTable()->authentificationFailed($users->getMail());
+                        
+                        /**
+                         * Last warning on the 2nd attempt
+                         */
+                        if($authInfo['numberTry'] == 2) {
+
+                            $error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect</small>.
+                                        <hr>
+                                     <small>Last attempt before your account is being locked</small>";
+                        } else {
+
+                            $error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect.</small>";
+                        }
+                    }
                 }
             }
         }
 
         return new ViewModel(array(
-            'form'  => $form,
-        ));
+            'form'      => $form,
+            'usersList' => $this->getUsersTable()->getUsersList(),
+            'error'     => @$error,
+            ));
     }
 
     public function signupAction()
@@ -178,7 +255,8 @@ class AuthController extends AbstractActionController
 
         return new ViewModel(array(
             'form'  => $form,
-        ));
+            'usersList' => $this->getUsersTable()->getUsersList(),
+            ));
     }
 
     public function logoutAction()
@@ -202,6 +280,7 @@ class AuthController extends AbstractActionController
         /*
          * Redirecting the user to the index
          */
-        $this->redirect()->toRoute('home');
+        $url = $this->getRequest()->getHeader('Referer')->getUri();
+        $this->redirect()->toUrl($url);
     }
 }

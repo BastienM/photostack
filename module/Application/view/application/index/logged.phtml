@@ -11,6 +11,25 @@
         <a class="navbar-brand" href="<?php echo $this->url('home'); ?>">Photostack</a>
       </div>
       <div class="navbar-collapse collapse" id="loginForm">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="<?php echo $this->url('home'); ?>">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galleries <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <?php foreach ($this->usersList as $user)
+              {
+              ?>
+              <li>
+                 <a href="<?php echo $this->url('gallery', array('user' => $user['username'])); ?>" title="<?php echo $user['username']; ?>">
+                    <i class='fa fa-folder-open'></i> <?php echo $user['username']; ?>
+                  </a>
+              </li>
+              <?php
+              }
+               ?>
+            </ul>
+          </li>
+        </ul>
         <div class='navbar-form navbar-right'>
           <a href='<?php echo $this->url('home') ?>'><button class='btn btn-success btn-sm' type='submit'><i class="fa fa-user"></i>&nbsp;&nbsp;My account</button></a>
           <a href='<?php echo $this->url('logout') ?>'><button class='btn btn-danger btn-sm' type='submit'><i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;Log out</button></a>
@@ -20,26 +39,7 @@
   </nav>
 </header><!-- /header -->
 <section class="container">
-</section>
-<aside class="col-xs-3 .col-md-5">
-  <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      <i class="fa fa-camera"></i> Galleries
-    </button>
-    <ul class="dropdown-menu">
-      <?php foreach ($this->usersList as $user)
-      {
-        echo ("<li>
-          <a href='#".$user['username']."' title='".$user['username']."'>
-          <i class='fa fa-folder-open'></i> ".$user['username']."
-          </a>
-          </li>");
-        } ?>
-      </ul>
-    </div>
-  </aside>
-
-  <section class="col-xs-12 col-sm-6 col-md-8" id="gallery">
+  <section class="" id="gallery">
     <div class="page-header">
       <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
     </div>
@@ -48,10 +48,11 @@
       foreach ($this->images as $image)
       {
         echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
-          <a href='".$image['url']."' class='thumbnail'>
-          <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+          <a href='".$image['url']."' class='thumbnail fancybox'>
+            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
           </a>
-          </figure>");
-        } ?>
-      </div>
-    </section>
+        </figure>");
+      } ?>
+    </div>
+  </section>
+</section>

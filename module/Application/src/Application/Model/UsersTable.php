@@ -94,7 +94,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         });
 
         return $usersList->toArray();
-     }
+    }
 
     public function saveUserInfo(Users $users)
     {
@@ -107,13 +107,13 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             'password' => $bcrypt->create($random_pwd),
             'mail'     => $users->getMail(),
             'age'      => $users->getAge(),
-        );
+            );
 
         $DBinfo = $this->getUserInfo($users->getMail());
 
         if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
-            echo($data['password']);
+            echo($random_pwd);
         }
         else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'])
         {

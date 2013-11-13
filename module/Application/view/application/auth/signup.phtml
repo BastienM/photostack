@@ -10,18 +10,35 @@
         </button>
         <a class="navbar-brand" href="<?php echo $this->url('home'); ?>">Photostack</a>
       </div>
-      <div class="navbar-collapse collapse">
+      <div class="navbar-collapse collapse" id="loginForm">
+        <ul class="nav navbar-nav">
+          <li><a href="<?php echo $this->url('home'); ?>">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galleries <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <?php foreach ($this->usersList as $user)
+              {
+              ?>
+              <li>
+                 <a href="<?php echo $this->url('gallery', array('user' => $user['username'])); ?>" title="<?php echo $user['username']; ?>">
+                    <i class='fa fa-folder-open'></i> <?php echo $user['username']; ?>
+                  </a>
+              </li>
+              <?php
+              }
+               ?>
+            </ul>
+          </li>
+        </ul>
         <div class="navbar-form navbar-right">
           <a class="btn btn-success btn-sm" href="<?php echo $this->url('signin'); ?>"> Sign In</a>
-          <a class="btn btn-info btn-sm" href="<?php echo $this->url('signup'); ?>"> Register</a>
         </div>
       </div>
     </div><!--/.navbar-collapse -->
   </nav>
 </header><!-- /header -->
 <section class="container">
-</section>
-<div id="form" class="form-signin">
+  <div id="form" class="form-signin">
     <?php
     $form->setAttribute('action', $this->url('signup'))
     ->prepare();
@@ -30,7 +47,7 @@
     ?>
     <h2 class="form-signin-heading">Want to sign up ?</h2>
     <hr>
-    <?
+    <?php
     echo "<div class='form-group'>";
     echo $this->formRow($users->get('mail'));
     echo "</div>";

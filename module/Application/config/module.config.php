@@ -20,15 +20,18 @@ return array(
                     ),
                 ),
             ),
-            'logged' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/logged',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'logged',
-                    ),
-                ),
+            'gallery' => array(
+               'type'    => 'segment',
+               'options' => array(
+                   'route'    => '/gallery[/][:user]',
+                   'constraints' => array(
+                       'user' => '[a-zA-Z0-9_-]*',
+                       ),
+                   'defaults' => array(
+                       'controller' => 'Application\Controller\Gallery',
+                       'action'     => 'index',
+                       ),
+                   ),
             ),
             'signin' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
@@ -113,8 +116,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Auth' => 'Application\Controller\AuthController',
+            'Application\Controller\Index'   => 'Application\Controller\IndexController',
+            'Application\Controller\Auth'    => 'Application\Controller\AuthController',
+            'Application\Controller\Gallery' => 'Application\Controller\GalleryController',
         ),
     ),
     'view_manager' => array(

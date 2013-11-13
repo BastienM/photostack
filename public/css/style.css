@@ -17,6 +17,11 @@ aside {
 }
 #gallery .thumbnail {
     width: 160px;
+    height: 160px;
+}
+#gallery img {
+    width: 150px;
+    height: 150px;
 }
 #gallery figcaption {
     background: #F8F8F8;

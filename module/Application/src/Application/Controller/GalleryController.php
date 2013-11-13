@@ -19,7 +19,7 @@ use Application\Form\MainLoginForm;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
-class IndexController extends AbstractActionController
+class GalleryController extends AbstractActionController
 {
     protected $imagesTable;
     protected $usersTable;
@@ -80,38 +80,19 @@ class IndexController extends AbstractActionController
         $form->bind($users);
 
         /**
-        * $users contains the list of all users
-        * who has upload at least one image
-        *
-        * @var array
-        */
-        $galleriesList = $this->getUsersTable()->getUsersOwningPhotoList();
-
-        /**
-        * Fetching pseudos in a new array
-        */
-        foreach ($galleriesList as $user)
-        {
-            $userliste[] = $user['username'];
-        }
-
-        /**
-        * $username equal the randomly selected user
-        * through $userliste index keys
-        * 
-        * @var string
-        */
-        $randomUser = $userliste[array_rand($userliste)];
+         * 
+         */
+        $user = (string) $this->params()->fromRoute('user', 0);
 
         /*
         * Picking up only the photos whose are owned by the selected user
         */
-        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
+        $imageSet = $this->getImagesTable()->getUserImages($user);
 
         $view = new ViewModel(array(
             'form'            => $form,
             'images'          => $imageSet,
-            'user'            => $randomUser,
+            'user'            => $user,
             'usersList'       => $this->getUsersTable()->getUsersList(),
             ));
 
