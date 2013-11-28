@@ -53,20 +53,25 @@
   </nav>
 </header><!-- /header -->
 <section class="container">
-  <section class="" id="gallery">
-    <div class="page-header">
-      <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <section class="col-md-12 column" id="gallery">
+                    <div class="page-header">
+                      <?php echo ("<h2 class='author'>".$this->user."'s<small> gallery</small></h2>"); ?>
+                    </div>
+                    <div class="row hmedia">
+                      <?php
+                      foreach ($this->images as $image)
+                      {
+                        echo ("<figure rel='enclosure' class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
+                          <a href='".$image['url']."' type='image/jpeg' class='thumbnail fancybox'>
+                            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+                          </a>
+                        </figure>");
+                      } ?>
+                </section>
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <?php
-      foreach ($this->images as $image)
-      {
-        echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
-          <a href='".$image['url']."' class='thumbnail fancybox'>
-            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
-          </a>
-        </figure>");
-      } ?>
-    </div>
-  </section>
 </section>

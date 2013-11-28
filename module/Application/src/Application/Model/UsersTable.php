@@ -22,6 +22,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      * ServiceManager and initialize the Adapter in the same time
      *
      * @param Adapter $adapter called via getServiceConfig() in Module.php
+     * @return void|\Zend\Db\Adapter\AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {
@@ -45,8 +46,8 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     /**
      * getUserInfo fetchs all the information about the user
      *
-     * @param  string $pseudo user's pseudo
-     *
+     * @param $mail
+     * @internal param string $pseudo user's pseudo
      * @return array contains all user's info
      */
     public function getUserInfo($mail)
@@ -107,6 +108,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             'password' => $bcrypt->create($random_pwd),
             'mail'     => $users->getMail(),
             'age'      => $users->getAge(),
+            'role'     => 'user',
             );
 
         $DBinfo = $this->getUserInfo($users->getMail());
@@ -124,19 +126,36 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     /**
      * deleteUser delete the user account whose username is provided
      *
-     * @param  int $pseudo user's pseudo
-     *
+     * @param $mail
+     * @internal param int $pseudo user's pseudo
      */
     public function deleteUser($mail)
     {
         $this->delete(array('username' => $mail));
     }
 
+
+    /**
+     * getUserRole retrieve the user's role from DB
+     *
+     * @param $mail
+     * @return array
+     */
+    public function getUserRole($mail) {
+
+       $role =  $this->select(function ($select) use ($mail) {
+                    $select->columns(array('role'));
+                    $select->where(array('mail' => $mail));
+                });
+
+        return $role->toArray();
+    }
+
     /**
      * generatePassword is a method to generate a random
      * password with a provided length
      *
-     * @param  integer $length password lenght wanted
+     * @param  integer $length password length wanted
      *
      * @return string generated password
      */

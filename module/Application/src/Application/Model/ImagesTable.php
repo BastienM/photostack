@@ -20,6 +20,7 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
      * ServiceManager and initialize the Adapter in the same time
      *
      * @param Adapter $adapter called via getServiceConfig() in Module.php
+     * @return void|\Zend\Db\Adapter\AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {
@@ -41,11 +42,12 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     }
 
     /**
-     * getImageInfo fetch all the infos about the 
+     * getImageInfo fetch all the infos about the
      * image's ID# provided
      *
      * @param  int $id image's ID#
      *
+     * @throws \Exception
      * @return array result row of ID#
      */
     public function getImageInfo($id)
@@ -62,12 +64,12 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     }
 
     /**
-     * getUserImages fetchs all the images of 
+     * getUserImages fetchs all the images of
      * the username provided
      *
      * @param  string $pseudo [description]
      *
-     * @return [type]         [description]
+     * @return \Zend\Db\ResultSet\ResultSet array   contains all user's images info
      */
     public function getUserImages($pseudo)
     {
@@ -113,5 +115,6 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     public function deleteImage($id)
     {
         $this->delete(array('id' => $id));
+
     }
 }

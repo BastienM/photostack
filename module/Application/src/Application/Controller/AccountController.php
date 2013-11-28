@@ -11,12 +11,10 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Model\Users;
-use Application\Form\MainLoginForm;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
-class IndexController extends AbstractActionController
+class AccountController extends AbstractActionController
 {
     protected $imagesTable;
     protected $usersTable;
@@ -41,7 +39,7 @@ class IndexController extends AbstractActionController
     /**
      * getImagesTable is method which allow us to
      * use ImagesTable (TableGateway object)
-     * dynamicly through the Service Manager 
+     * dynamicly through the Service Manager
      *
      * @return object TableGateway instance of ImagesTable
      */
@@ -62,65 +60,41 @@ class IndexController extends AbstractActionController
          */
         $manager = new SessionManager();
         $manager->start();
-        
+
         /*
          * Using user's namespace session
          */
         $userSession = new Container('user');
 
-        /**
-         * Initializing Login Form and the needed
-         * components
-         */
-        $form  = new MainLoginForm();
-        $users = new Users();
-        $form->bind($users);
-
-        /**
-        * $users contains the list of all users
-        * who has upload at least one image
-        *
-        * @var array
-        */
-        $galleriesList = $this->getUsersTable()->getUsersOwningPhotoList();
-
-        /**
-        * Fetching pseudos in a new array
-        */
-        foreach ($galleriesList as $user)
+        if  ($userSession->offsetExists('role') && $userSession->role == "user")
         {
-            $userliste[] = $user['username'];
+            $imageSet = $this->getImagesTable()->getUserImages($userSession->username);
         }
-
-        /**
-        * $username equal the randomly selected user
-        * through $userliste index keys
-        * 
-        * @var string
-        */
-        $randomUser = $userliste[array_rand($userliste)];
-
-        /*
-        * Picking up only the photos whose are owned by the selected user
-        */
-        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
 
         $view = new ViewModel(array(
-            'form'            => $form,
+//            'form'            => $form,
             'images'          => $imageSet,
-            'user'            => $randomUser,
+//            'user'            => $randomUser,
             'usersList'       => $this->getUsersTable()->getUsersList(),
-            ));
+        ));
 
         /*
-         * Loading another view if logged
+         * Loading another view if admin
          */
-        if  ($userSession->offsetExists('isLogged') && $userSession->isLogged === true)
+        if  ($userSession->offsetExists('role') && $userSession->role == "admin")
         {
 
-            $view->setTemplate('application/index/logged.phtml');
+            $view->setTemplate('application/account/index_admin.phtml');
         }
-        
+
         return $view;
+    }
+
+    public function removeAction() {
+
+        $id = (integer) $this->params()->fromRoute('id', 0);
+        $this->getImagesTable()->deleteImage($id);
+
+        $this->redirect()->toRoute('account');
     }
 }

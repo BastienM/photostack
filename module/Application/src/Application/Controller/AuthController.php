@@ -139,7 +139,7 @@ class AuthController extends AbstractActionController
                  */
                 if($authInfo['numberTry'] >= 3) {
 
-                    $error = "<strong><small><i class='fa fa-lock'></i></strong> Your is now locked.</small>";
+                    $error = "<strong><small><i class='fa fa-lock'></i></strong> Your account is now locked.</small>";
 
                     /**
                      * If the account hasn't been locked yet
@@ -175,6 +175,10 @@ class AuthController extends AbstractActionController
                          */
                         $userSession->isLogged = true;
                         $userSession->mail = $users->getMail();
+                        $userSession->username = $userDB['username'];
+
+                        $role = $this->getUsersTable()->getUserRole($userSession->mail);
+                        $userSession->role = $role[0]['role'];
                         
                         /*
                          * Redirection the user to the index
@@ -280,7 +284,8 @@ class AuthController extends AbstractActionController
         /*
          * Redirecting the user to the index
          */
-        $url = $this->getRequest()->getHeader('Referer')->getUri();
-        $this->redirect()->toUrl($url);
+//        $url = $this->getRequest()->getHeader('Referer')->getUri();
+//        $this->redirect()->toUrl($url);
+        $this->redirect()->toRoute('home');
     }
 }

@@ -11,10 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Factory;
 use Application\Model\Users;
-use Application\Model\UsersTable;
-use Application\Model\ImagesTable;
 use Application\Form\MainLoginForm;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
@@ -79,9 +76,6 @@ class GalleryController extends AbstractActionController
         $users = new Users();
         $form->bind($users);
 
-        /**
-         * 
-         */
         $user = (string) $this->params()->fromRoute('user', 0);
 
         /*

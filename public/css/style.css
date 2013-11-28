@@ -1,3 +1,12 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600);
+
+body {
+    font-family: 'Open Sans', 'Arial', sans-serif;
+}
+
+.open > .dropdown-menu {
+    margin-left: 10px;
+}
 #loginForm input[type='password'], #loginForm input[type='email']  {
     width: 175px;
 }
@@ -8,12 +17,12 @@
 #loginForm a {
     margin-left: 10px;
 }
-#register {
-    height: 26px;
-    line-height: 8px;
-}
 aside {
     margin-top: 99px;
+}
+.upload {
+    float: right;
+    margin: -50px 15px 0 0;
 }
 #gallery .thumbnail {
     width: 160px;
@@ -29,6 +38,7 @@ aside {
     border-radius: 5px;
     border: 1px solid rgba(0,0,0, 0.1);
     margin-bottom: 50px;
+    width: 160px;
 }
 #gallery figcaption p {
     margin-bottom: -15px;
@@ -45,8 +55,8 @@ aside {
     margin-bottom: -10px;
 }
 #gallery figcaption li:first-child {
-    margin-left: -20px;
-    margin-right: 20px;
+    margin-left: -25px;
+    margin-right: 10px;
 }
 #form {
     margin-left:auto;

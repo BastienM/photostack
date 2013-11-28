@@ -31,7 +31,7 @@
           </li>
         </ul>
         <div class='navbar-form navbar-right'>
-          <a href='<?php echo $this->url('home') ?>'><button class='btn btn-success btn-sm' type='submit'><i class="fa fa-user"></i>&nbsp;&nbsp;My account</button></a>
+          <a href='<?php echo $this->url('account') ?>'><button class='btn btn-success btn-sm' type='submit'><i class="fa fa-user"></i>&nbsp;&nbsp;My account</button></a>
           <a href='<?php echo $this->url('logout') ?>'><button class='btn btn-danger btn-sm' type='submit'><i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;Log out</button></a>
         </div>
       </div>
@@ -39,20 +39,25 @@
   </nav>
 </header><!-- /header -->
 <section class="container">
-  <section class="" id="gallery">
-    <div class="page-header">
-      <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <section class="col-md-12 column" id="gallery">
+                    <div class="page-header">
+                      <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
+                    </div>
+                    <div class="row">
+                      <?php
+                      foreach ($this->images as $image)
+                      {
+                        echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
+                          <a href='".$image['url']."' class='thumbnail fancybox'>
+                            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
+                          </a>
+                        </figure>");
+                      } ?>
+                </section>
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <?php
-      foreach ($this->images as $image)
-      {
-        echo ("<figure class='col-xs-10 col-sm-6 col-md-3 col-lg-2'>
-          <a href='".$image['url']."' class='thumbnail fancybox'>
-            <img src='".$image['url']."' alt='".$image['id']."_".str_replace(' ', '_', $image['name'])."'>
-          </a>
-        </figure>");
-      } ?>
-    </div>
-  </section>
 </section>

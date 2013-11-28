@@ -22,6 +22,7 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
      * ServiceManager and initialize the Adapter in the same time
      *
      * @param Adapter $adapter called via getServiceConfig() in Module.php
+     * @return void|\Zend\Db\Adapter\AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {

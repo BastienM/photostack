@@ -8,6 +8,7 @@ class Users
     private $password;
     private $mail;
     private $age;
+    private $role;
     
     public function exchangeArray($data)
     {
@@ -51,5 +52,14 @@ class Users
     public function getAge()
     {
         return $this->age;
+    }
+
+    private function setRole($role)
+    {
+        $this->role = $role;
+    }
+    public function getRole()
+    {
+        return $this->role;
     }
 }

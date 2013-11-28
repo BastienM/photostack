@@ -33,6 +33,29 @@ return array(
                        ),
                    ),
             ),
+            'account' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/account',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Account',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'remove' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/account/image/remove[/][:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Account',
+                        'action'     => 'remove',
+                    ),
+                ),
+            ),
             'signin' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -119,6 +142,7 @@ return array(
             'Application\Controller\Index'   => 'Application\Controller\IndexController',
             'Application\Controller\Auth'    => 'Application\Controller\AuthController',
             'Application\Controller\Gallery' => 'Application\Controller\GalleryController',
+            'Application\Controller\Account' => 'Application\Controller\AccountController',
         ),
     ),
     'view_manager' => array(
