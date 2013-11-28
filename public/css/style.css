@@ -17,6 +17,18 @@ body {
 #loginForm a {
     margin-left: 10px;
 }
+#captcha > ul {
+    list-style: none;
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #55484a;
+    padding: 10px;
+    margin: 15px 0 20px 0;
+    border-radius: 4px;
+}
+#captcha input {
+    margin-top: 10px;
+}
 aside {
     margin-top: 99px;
 }

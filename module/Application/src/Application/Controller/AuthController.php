@@ -253,13 +253,22 @@ class AuthController extends AbstractActionController
                 /**
                  * And we save the details
                  */
-                $this->getUsersTable()->saveUserInfo($users);
+                $registered = $this->getUsersTable()->saveUserInfo($users);
+
+                if($registered){
+
+                    $msg = $registered;
+                } else {
+
+                    $msg = "Account already exists";
+                }
             }
         }
 
         return new ViewModel(array(
             'form'  => $form,
             'usersList' => $this->getUsersTable()->getUsersList(),
+            'message'   => @$msg,
             ));
     }
 

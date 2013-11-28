@@ -50,6 +50,24 @@ class UsersSignupFieldset extends Fieldset implements InputFilterProviderInterfa
             'options'    => array( 
                 ), 
         ));
+
+        $this->add(array(
+            'name' => 'captcha',
+            'type' => 'Zend\Form\Element\Captcha',
+            'attributes' => array(
+                'class'       => 'form-control',
+                'required'    => 'required',
+            ),
+            'options' => array(
+                'label' => '',
+                'captcha' => array(
+                    'class' => 'Dumb',
+                ),
+                'messages' => array(
+                    'badCaptcha' => 'What the fuck !',
+                ),
+            ),
+        ));
     }
 
     /**

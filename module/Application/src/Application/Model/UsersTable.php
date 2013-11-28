@@ -115,11 +115,13 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 
         if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
-            echo($random_pwd);
+
+            return $random_pwd;
         }
-        else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'])
+        else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'] || $DBinfo['mail'] === $data['mail'] )
         {
-            echo('Mail already associated with an account');
+
+            return null;
         }
     }
 
