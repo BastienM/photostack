@@ -8,7 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?php echo $this->url('home'); ?>">Photostack</a>
+          <a class="navbar-brand" href="<?php echo $this->url('home'); ?>"><i class="fa fa-stack-overflow"></i> Photostack</a>
       </div>
       <div class="navbar-collapse collapse" id="loginForm">
         <ul class="nav navbar-nav">
@@ -55,13 +55,13 @@
         <div class="col-md-12 column">
             <div class="row clearfix">
                 <section class="col-md-12 column" id="gallery">
-                    <div class="page-header">
+                    <div class="page-header" itemprop="brand">
                         <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
                     </div>
                     <?php foreach ($this->images as $image) { ?>
-                        <figure class='col-xs-6 col-md-3 col-md-3'>
+                        <figure class='col-xs-6 col-md-3 col-md-3' itemprop="image">
                             <a href="<?php echo $image['url'] ?>" class='thumbnail fancybox'>
-                                <img src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])) ?>">
+                                <img src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])) ?>" description="<?php echo $image['name'] ?>">
                             </a>
                         </figure>
                     <?php } ?>

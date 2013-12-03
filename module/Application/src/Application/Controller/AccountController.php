@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
+use Application\Form\UploadForm;
 
 class AccountController extends AbstractActionController
 {
@@ -71,10 +72,11 @@ class AccountController extends AbstractActionController
             $imageSet = $this->getImagesTable()->getUserImages($userSession->username);
         }
 
+        $form = new UploadForm('upload-form');
+
         $view = new ViewModel(array(
-//            'form'            => $form,
+            'form'            => $form,
             'images'          => $imageSet,
-//            'user'            => $randomUser,
             'usersList'       => $this->getUsersTable()->getUsersList(),
         ));
 

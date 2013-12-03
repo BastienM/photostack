@@ -89,3 +89,39 @@ aside {
     margin-bottom: -15px;
     margin-left: 180px;
 }
+.modal-content {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.upload-btn {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+}
+input[type="file"] {
+    cursor: pointer;
+    margin-bottom: 30px;
+    font: "Helvetica Neue",Helvetica,Arial,"sans-serif";
+}
+input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+input[type="file"]:before {
+    content: 'Select your image';
+    display: inline-block;
+    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+}
+input[type="file"]:focus {
+    outline: none !important;
+}

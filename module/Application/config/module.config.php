@@ -48,7 +48,7 @@ return array(
                 'options' => array(
                     'route'    => '/account/image/remove[/][:id]',
                     'constraints' => array(
-                        'id' => '[0-9]',
+                        'id' => '[0-9_-]*',
                     ),
                     'defaults' => array(
                         'controller' => 'Application\Controller\Account',
