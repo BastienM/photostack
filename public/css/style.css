@@ -7,12 +7,15 @@ body {
 .open > .dropdown-menu {
     margin-left: 10px;
 }
+
+/*   ============
+    | LOGIN FORM |
+     ============ */
 #loginForm input[type='password'], #loginForm input[type='email']  {
     width: 175px;
 }
 #loginForm input[type='password'] {
     margin-right: 10px;
-    margin-left:  5px;
 }
 #loginForm a {
     margin-left: 10px;
@@ -29,13 +32,14 @@ body {
 #captcha input {
     margin-top: 10px;
 }
-aside {
-    margin-top: 99px;
-}
 .upload {
     float: right;
     margin: -50px 15px 0 0;
 }
+
+/*   ===========
+    |  GALLERY  |
+     =========== */
 #gallery .thumbnail {
     width: 160px;
     height: 160px;
@@ -69,6 +73,9 @@ aside {
 #gallery figcaption li:first-child {
     margin-left: -25px;
     margin-right: 10px;
+}
+.pagination {
+    text-align: center;
 }
 #form {
     margin-left:auto;

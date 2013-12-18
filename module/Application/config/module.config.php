@@ -33,6 +33,32 @@ return array(
                        ),
                    ),
             ),
+            'unlock' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/account/unlock[/][:user]',
+                    'constraints' => array(
+                        'user' => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'unlock',
+                    ),
+                ),
+            ),
+            'delete' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/account/delete[/][:user]',
+                    'constraints' => array(
+                        'user' => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Account',
+                        'action'     => 'delete',
+                    ),
+                ),
+            ),
             'account' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

@@ -81,7 +81,9 @@ class GalleryController extends AbstractActionController
         /*
         * Picking up only the photos whose are owned by the selected user
         */
-        $imageSet = $this->getImagesTable()->getUserImages($user);
+        $imageSet = $this->getImagesTable()->getUserImages($user, true);
+        $imageSet->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $imageSet->setItemCountPerPage(12);
 
         $view = new ViewModel(array(
             'form'            => $form,

@@ -55,6 +55,13 @@
                     <?php } ?>
                 </section>
             </div>
+            <?php
+            echo $this->paginationControl(
+                $this->images, 'sliding',
+                array('partial/paginator.phtml', 'Application'),
+                array('route' => 'gallery', 'user' =>$this->user)
+            );
+            ?>
         </div>
     </div>
 </section>

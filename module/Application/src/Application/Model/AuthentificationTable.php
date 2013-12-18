@@ -95,10 +95,10 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
      */
     public function authentificationFailed($mail) {
 
-        $data = $this->getUserAuthInfo($mail);
         $this->update(array(
-          'numberTry' => new Expression('numberTry + 1')),array(
-                'mail' => $mail)
+          'numberTry' => new Expression('numberTry + 1')),
+          array(
+              'mail' => $mail)
           );
     }
 
@@ -110,9 +110,20 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
      */
     public function blockAccount($mail) {
 
-        $data = $this->getUserAuthInfo($mail);
+       $this->update(array(
+          'isBlocked' => '1'),
+          array(
+              'mail' => $mail)
+        );
+    }
+
+    public function unlockAccount($mail) {
+
         $this->update(array(
-          'isBlocked' => '1'
-        ));
+            'isBlocked' => '0',
+            'numberTry' => '0'),
+            array(
+            'mail' => $mail)
+        );
     }
 }

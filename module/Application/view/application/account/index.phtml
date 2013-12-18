@@ -53,10 +53,10 @@
                                 <img src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])); ?>">
                             </a>
                             <figcaption>
-                                <p>03/11/2013, 8Mo</p>
+                                <p><?php echo str_replace('-', '/', $image['uploaded']).", ".$image['weight']."mo" ?></p>
                                 <hr>
                                 <ul>
-                                    <li><h4><span class="label label-primary">1/1</span></h4></li>
+                                    <li><h4><span class="label label-primary"><?php echo "#".$image['publishId'] ?></span></h4></li>
                                     <li>
                                         <a href="<?php echo $this->url('remove', array('id' => $image['id'])); ?>"
                                            class="btn btn-delete btn-danger btn-xs"><i class="fa fa-times"></i> Delete</a>
@@ -71,7 +71,25 @@
         </div>
     </div>
 </section>
-<div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel2">Delete this image ?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="center-block">
+                    <button type="button" class="btn btn-default" id="cancel">No</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-primary" id="confirm">Yes</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="modal-upload" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -91,19 +109,5 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-    <div class="modal fade" id="delete" tabindex="-2" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel2">Confirm deletion</h4>
-                </div>
-                <div class="modal-body">
-                    test
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
 <?php $this->inlineScript()->appendFile('/js/upload.js'); ?>

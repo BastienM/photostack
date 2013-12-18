@@ -67,25 +67,25 @@ class AccountController extends AbstractActionController
          */
         $userSession = new Container('user');
 
-        if  ($userSession->offsetExists('role') && $userSession->role == "user")
-        {
-            $imageSet = $this->getImagesTable()->getUserImages($userSession->username);
-        }
-
-        $form = new UploadForm('upload-form');
-
         $view = new ViewModel(array(
-            'form'            => $form,
-            'images'          => $imageSet,
             'usersList'       => $this->getUsersTable()->getUsersList(),
         ));
+
+        if  ($userSession->offsetExists('role') && $userSession->role == "user")
+        {
+            $form = new UploadForm('upload-form');
+            $imageSet = $this->getImagesTable()->getUserImages($userSession->username);
+
+            $view->form = $form;
+            $view->images = $imageSet;
+        }
 
         /*
          * Loading another view if admin
          */
         if  ($userSession->offsetExists('role') && $userSession->role == "admin")
         {
-
+            $view->userAuthList = $this->getUsersTable()->getUserAuthInfoList();
             $view->setTemplate('application/account/index_admin.phtml');
         }
 
@@ -96,6 +96,16 @@ class AccountController extends AbstractActionController
 
         $id = (integer) $this->params()->fromRoute('id', 0);
         $this->getImagesTable()->deleteImage($id);
+
+        $this->redirect()->toRoute('account');
+    }
+
+    public function deleteAction() {
+
+        $user = (string) $this->params()->fromRoute('user', 0);
+
+        $this->getUsersTable()->deleteUser($user);
+        $this->getImagesTable()->deleteUserImages($user);
 
         $this->redirect()->toRoute('account');
     }

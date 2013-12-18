@@ -103,7 +103,9 @@ class IndexController extends AbstractActionController
         /*
         * Picking up only the photos whose are owned by the selected user
         */
-        $imageSet = $this->getImagesTable()->getUserImages($randomUser);
+        $imageSet = $this->getImagesTable()->getUserImages($randomUser, true);
+        $imageSet->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $imageSet->setItemCountPerPage(12);
 
         $view = new ViewModel(array(
             'form'            => $form,

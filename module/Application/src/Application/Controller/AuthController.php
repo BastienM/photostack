@@ -170,6 +170,12 @@ class AuthController extends AbstractActionController
                      */
                     if ($bcrypt->verify($users->getPassword(), $userDB['password']))
                     {
+
+                        /*
+                         * Clearing AuthLog
+                         */
+                        $this->getAuthentificationTable()->unlockAccount($users->getMail());
+
                         /*
                          * Setting infos in the session
                          */
@@ -296,5 +302,14 @@ class AuthController extends AbstractActionController
 //        $url = $this->getRequest()->getHeader('Referer')->getUri();
 //        $this->redirect()->toUrl($url);
         $this->redirect()->toRoute('home');
+    }
+
+    public function unlockAction() {
+
+        $user = (string) $this->params()->fromRoute('user', 0);
+        $userInfo = $this->getUsersTable()->getUserInfoByUser($user);
+
+        $this->getAuthentificationTable()->unlockAccount($userInfo['mail']);
+        $this->redirect()->toRoute('account');
     }
 }

@@ -38,10 +38,39 @@
     </nav>
 </header><!-- /header -->
 <section class="container">
-    <section class="" id="gallery">
         <div class="page-header">
-            <?php echo "hello admin !"; ?>
+            <h1>Users list</h1>
         </div>
+        <table class="table table-bordered table-hover table-responsive">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($this->userAuthList as $user) { ?>
+            <tr>
+                <td><?php echo $user['username'] ?></td>
+                <td><?php
+                    if($user['isBlocked'] === null || $user['isBlocked'] == 0) {
+
+                        echo "<span class='label label-success'>active</span>";
+
+                    } else if($user['isBlocked'] == 1) {
+
+                        echo "<span class='label label-warning'>blocked</span>";
+                    }
+             ?></td>
+                <td>
+                    <a href="<?php echo $this->url('unlock', array('user' => $user['username'])); ?>" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Unlock</a>
+                    &nbsp;
+                    <a href="<?php echo $this->url('delete', array('user' => $user['username'])); ?>" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> Delete</a>
+                </td>
+            </tr>
+            <?php } ?>
+            </tbody>
+        </table>
         </div>
-    </section>
 </section>

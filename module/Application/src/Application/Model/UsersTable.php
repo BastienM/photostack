@@ -15,7 +15,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     /*
      * Table name in database
      */
-    protected $table ='users';
+    protected $table = 'users';
 
     /**
      * setDbAdapter allow to call the class from within the
@@ -44,26 +44,6 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     }
 
     /**
-     * getUserInfo fetchs all the information about the user
-     *
-     * @param $mail
-     * @internal param string $pseudo user's pseudo
-     * @return array contains all user's info
-     */
-    public function getUserInfo($mail)
-    {
-        $mail  = $mail;
-        $rowset = $this->select(array('mail' => $mail));
-        $row = $rowset->current();
-
-        if (!$row) {
-            return false;
-        }
-
-        return $row;
-    }
-
-    /**
      * getUsersOwningPhotoList fetchs all usernames whom had upload
      * at least one image
      *
@@ -72,11 +52,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function getUsersOwningPhotoList()
     {
         $select = new Select();
-        $list = $this->select(function ($select)
-        {
+        $list = $this->select(function ($select) {
             $select->join('images', 'users.username = images.owner')
-            ->where('`images`.owner = `users`.username')
-            ->group('users.username');
+                ->where('`images`.owner = `users`.username')
+                ->group('users.username');
         });
 
         return $list;
@@ -89,14 +68,19 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
      */
     public function getUsersList()
     {
-        $usersList = $this->select(function ($select)
-        {
+        $usersList = $this->select(function ($select) {
             $select->columns(array('username'));
         });
 
         return $usersList->toArray();
     }
 
+    /**
+     * saveUserInfo save user's info into database and
+     * generate a random password
+     * @param Users $users
+     * @return null|string
+     */
     public function saveUserInfo(Users $users)
     {
         $bcrypt = new Bcrypt();
@@ -106,10 +90,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $data = array(
             'username' => $users->getUsername(),
             'password' => $bcrypt->create($random_pwd),
-            'mail'     => $users->getMail(),
-            'age'      => $users->getAge(),
-            'role'     => 'user',
-            );
+            'mail' => $users->getMail(),
+            'age' => $users->getAge(),
+            'role' => 'user',
+        );
 
         $DBinfo = $this->getUserInfo($users->getMail());
 
@@ -117,40 +101,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             $this->insert($data);
 
             return $random_pwd;
-        }
-        else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'] || $DBinfo['mail'] === $data['mail'] )
-        {
+        } else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'] || $DBinfo['mail'] === $data['mail']) {
 
             return null;
         }
-    }
-
-    /**
-     * deleteUser delete the user account whose username is provided
-     *
-     * @param $mail
-     * @internal param int $pseudo user's pseudo
-     */
-    public function deleteUser($mail)
-    {
-        $this->delete(array('username' => $mail));
-    }
-
-
-    /**
-     * getUserRole retrieve the user's role from DB
-     *
-     * @param $mail
-     * @return array
-     */
-    public function getUserRole($mail) {
-
-       $role =  $this->select(function ($select) use ($mail) {
-                    $select->columns(array('role'));
-                    $select->where(array('mail' => $mail));
-                });
-
-        return $role->toArray();
     }
 
     /**
@@ -166,12 +120,94 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $count = mb_strlen($chars);
 
-        for ($i = 0, $result = ''; $i < $length; $i++)
-        {
+        for ($i = 0, $result = ''; $i < $length; $i++) {
             $index = rand(0, $count - 1);
             $result .= mb_substr($chars, $index, 1);
         }
 
         return $result;
+    }
+
+    /**
+     * getUserInfo fetchs all the information about the user
+     *
+     * @param $mail
+     * @internal param string $pseudo user's pseudo
+     * @return array contains all user's info
+     */
+    public function getUserInfo($mail)
+    {
+        $mail = $mail;
+        $rowset = $this->select(array('mail' => $mail));
+        $row = $rowset->current();
+
+        if (!$row) {
+            return false;
+        }
+
+        return $row;
+    }
+
+    /**
+     * getUserInfoByUser fetchs all the information about the user
+     *
+     * @param $user
+     * @internal param string $pseudo user's pseudo
+     * @return array contains all user's info
+     */
+    public function getUserInfoByUser($user)
+    {
+        $user = $user;
+        $rowset = $this->select(array('username' => $user));
+        $row = $rowset->current();
+
+        if (!$row) {
+            return false;
+        }
+
+        return $row;
+    }
+
+    public function  getUserAuthInfoList()
+    {
+
+        $userAuthList = $this->select(function ($select) {
+            $select->join(
+                array("auth" => "authentification"),
+                "auth.mail = users.mail",
+                array('isBlocked'),
+                Select::JOIN_LEFT
+            )->columns(array('username'));
+        });
+
+        return $userAuthList->toArray();
+    }
+
+    /**
+     * deleteUser delete the user account whose username is provided
+     *
+     * @param $user
+     * @internal param int $pseudo user's pseudo
+     */
+    public function deleteUser($user)
+    {
+        $this->delete(array('username' => $user));
+    }
+
+    /**
+     * getUserRole retrieve the user's role from DB
+     *
+     * @param $mail
+     * @return array
+     */
+    public function getUserRole($mail)
+    {
+
+        $role = $this->select(function ($select) use ($mail) {
+            $select->columns(array('role'));
+            $select->where(array('mail' => $mail));
+        });
+
+        return $role->toArray();
     }
 }

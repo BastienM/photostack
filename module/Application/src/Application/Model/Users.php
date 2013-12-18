@@ -9,7 +9,7 @@ class Users
     private $mail;
     private $age;
     private $role;
-    
+
     public function exchangeArray($data)
     {
         $this->username   = (isset($data['username'])) ? $data['username'] : null;

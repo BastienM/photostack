@@ -3,7 +3,6 @@
 namespace Application\Model;
 
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -71,8 +70,21 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
      *
      * @return \Zend\Db\ResultSet\ResultSet array   contains all user's images info
      */
-    public function getUserImages($pseudo)
+    public function getUserImages($pseudo, $paginated = false)
     {
+        if ($paginated) {
+
+            $sql = $this->getSql();
+            $select = $sql->select();
+
+            $select->where(array('owner' => $pseudo));
+
+            $adapter = new \Zend\Paginator\Adapter\DbSelect($select, $sql);
+            $paginator = new \Zend\Paginator\Paginator($adapter);
+
+            return $paginator;
+        }
+
         $userImages = $this->select(array('owner' => $pseudo));
 
         return $userImages;
@@ -116,5 +128,10 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     {
         $this->delete(array('id' => $id));
 
+    }
+
+    public function deleteUserImages($user) {
+
+        $this->delete(array('owner' => $user));
     }
 }
