@@ -31,22 +31,24 @@
           </li>
         </ul>
         <div class='navbar-form navbar-right'>
-          <?php
-          $form->setAttribute('action', $this->url('signin'))
-          ->prepare();
-          echo $this->form()->openTag($form);
-          $users = $form->get('users');
-          echo "<div class='form-group'>";
-          echo $this->formRow($users->get('mail'));
-          echo "</div>";
-          echo "<div class='form-group'>";
-          echo $this->formRow($users->get('password'));
-          echo "</div>";
-          echo "<div class='form-group'>";
-          echo $this->formElement($form->get('submit'));
-          echo $this->formHidden($form->get('csrf'));
-          echo $this->form()->closeTag(); ?>
-          <a href='<?php echo $this->url('signup') ?>'><button class='btn btn-primary btn-sm' id="register">Register</button></a>
+            <?php $form->setAttribute('action', $this->url('signin'))
+                ->prepare();
+
+            echo $this->form()->openTag($form);
+
+            $users = $form->get('users'); ?>
+            <div class='form-group'>
+                <?php echo $this->formRow($users->get('mail')); ?>
+            </div>
+            <div class='form-group'>
+                <?php echo $this->formRow($users->get('password')); ?>
+            </div>
+            <div class='form-group'>
+                <?php echo $this->formElement($form->get('submit')); ?>
+                <a href='<?php echo $this->url('signup') ?>' class='btn btn-primary btn-sm' id="register">Register</a>
+            </div>
+            <?php echo $this->formHidden($form->get('csrf'));
+            echo $this->form()->closeTag(); ?>
         </div>
       </div>
     </div><!--/.navbar-collapse -->

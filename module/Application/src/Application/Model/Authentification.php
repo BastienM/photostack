@@ -8,19 +8,20 @@ class Authentification
     private $lastTry;
     private $numberTry;
     private $isBlocked;
-    
+
     public function exchangeArray($data)
     {
-        $this->username         = (isset($data['username'])) ? $data['username'] : null;
-        $this->lastTry          = (isset($data['lastTry'])) ? $data['lastTry'] : null;
-        $this->numberTry        = (isset($data['numberTry'])) ? $data['numberTry'] : null;
-        $this->isBlocked        = (isset($data['isBlocked'])) ? $data['isBlocked'] : null;
+        $this->username = (isset($data['username'])) ? $data['username'] : null;
+        $this->lastTry = (isset($data['lastTry'])) ? $data['lastTry'] : null;
+        $this->numberTry = (isset($data['numberTry'])) ? $data['numberTry'] : null;
+        $this->isBlocked = (isset($data['isBlocked'])) ? $data['isBlocked'] : null;
     }
 
     private function setUsername($username)
     {
         $this->username = $username;
     }
+
     public function getUsername()
     {
         return $this->username;
@@ -30,6 +31,7 @@ class Authentification
     {
         $this->lastTry = $lastTry;
     }
+
     public function getlastTry()
     {
         return $this->lastTry;
@@ -39,6 +41,7 @@ class Authentification
     {
         $this->numberTry = $numberTry;
     }
+
     public function getNumerTry()
     {
         return $this->numerTry;
@@ -48,6 +51,7 @@ class Authentification
     {
         $this->isBlocked = $isBlocked;
     }
+
     public function getIsBlocked()
     {
         return $this->isBlocked;

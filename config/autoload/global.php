@@ -13,8 +13,8 @@
 
 return array(
     'db' => array(
-        'driver'   => 'pdo_mysql',
-        'database' => 'photostack',
+        'driver'   => 'Pdo_Sqlite',
+        'database' => './photostack.sqlite',
         'driver_options' => array(
              PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),

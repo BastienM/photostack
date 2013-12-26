@@ -79,7 +79,8 @@ class GalleryController extends AbstractActionController
         $user = (string) $this->params()->fromRoute('user', 0);
 
         /*
-        * Picking up only the photos whose are owned by the selected user
+         * Picking up only the photos whose are owned by the selected user
+         * and setting up the paginator
         */
         $imageSet = $this->getImagesTable()->getUserImages($user, true);
         $imageSet->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));

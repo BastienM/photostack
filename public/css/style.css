@@ -20,7 +20,11 @@ body {
 #loginForm a {
     margin-left: 10px;
 }
-#captcha > ul {
+#captcha {
+    font-size: small;
+    text-align: center;
+}
+#captcha > ul, .form-group > ul {
     list-style: none;
     color: #b94a48;
     background-color: #f2dede;

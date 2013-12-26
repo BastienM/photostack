@@ -43,6 +43,13 @@ class AuthController extends AbstractActionController
         return $this->usersTable;
     }
 
+    /**
+     * getImagesTable is method which allow us to
+     * use ImagesTable (TableGateway object)
+     * dynamicly through the Service Manager
+     *
+     * @return object TableGateway instance of ImagesTable
+     */
     public function getAuthentificationTable()
     {
         if (!$this->authentificationTable)
@@ -90,6 +97,8 @@ class AuthController extends AbstractActionController
         $form  = new LoginForm();
         $users = new Users();
         $form->bind($users);
+
+        $view = new ViewModel;
 
         /**
          * $request contains the HTTP request datas
@@ -139,7 +148,7 @@ class AuthController extends AbstractActionController
                  */
                 if($authInfo['numberTry'] >= 3) {
 
-                    $error = "<strong><small><i class='fa fa-lock'></i></strong> Your account is now locked.</small>";
+                    $view->error = "<strong><small><i class='fa fa-lock'></i></strong> Your account is now locked.</small>";
 
                     /**
                      * If the account hasn't been locked yet
@@ -203,23 +212,21 @@ class AuthController extends AbstractActionController
                          */
                         if($authInfo['numberTry'] == 2) {
 
-                            $error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect</small>.
+                            $view->error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect</small>.
                                         <hr>
                                      <small>Last attempt before your account is being locked</small>";
                         } else {
 
-                            $error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect.</small>";
+                            $view->error = "<strong><i class='fa fa-exclamation-triangle'></i></strong><small> Password and/or Mail incorrect.</small>";
                         }
                     }
                 }
             }
         }
 
-        return new ViewModel(array(
-            'form'      => $form,
-            'usersList' => $this->getUsersTable()->getUsersList(),
-            'error'     => @$error,
-            ));
+        $view->form = $form;
+        $view->usersList = $this->getUsersTable()->getUsersList();
+        return $view;
     }
 
     public function signupAction()
@@ -231,6 +238,8 @@ class AuthController extends AbstractActionController
         $form = new SignupForm();
         $users = new Users();
         $form->bind($users);
+
+        $view = new ViewModel;
 
         /**
          * $request contains the HTTP request datas
@@ -263,19 +272,17 @@ class AuthController extends AbstractActionController
 
                 if($registered){
 
-                    $msg = $registered;
+                    $view->message = $registered;
                 } else {
 
-                    $msg = "Account already exists";
+                    $view->message = "Account already exists";
                 }
             }
         }
 
-        return new ViewModel(array(
-            'form'  => $form,
-            'usersList' => $this->getUsersTable()->getUsersList(),
-            'message'   => @$msg,
-            ));
+        $view->form  = $form;
+        $view->usersList = $this->getUsersTable()->getUsersList();
+        return $view;
     }
 
     public function logoutAction()
@@ -299,8 +306,6 @@ class AuthController extends AbstractActionController
         /*
          * Redirecting the user to the index
          */
-//        $url = $this->getRequest()->getHeader('Referer')->getUri();
-//        $this->redirect()->toUrl($url);
         $this->redirect()->toRoute('home');
     }
 

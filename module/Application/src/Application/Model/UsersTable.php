@@ -2,13 +2,12 @@
 
 namespace Application\Model;
 
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\ResultSet\ResultSet;
-use Zend\Db\TableGateway\AbstractTableGateway;
-use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Db\Adapter\AdapterAwareInterface;
-use Zend\Db\Sql\Select;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\AdapterAwareInterface;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\Sql\Select;
+use Zend\Db\TableGateway\AbstractTableGateway;
 
 class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
@@ -100,7 +99,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         if (!isset($DBinfo) || empty($DBinfo)) {
             $this->insert($data);
 
-            return $random_pwd;
+            return "Your password is <b>" . $random_pwd."</b>";
         } else if (!empty($DBinfo) || $DBinfo['username'] === $data['username'] || $DBinfo['mail'] === $data['mail']) {
 
             return null;
@@ -168,6 +167,11 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         return $row;
     }
 
+    /**
+     * getUserAuthInfoList fetchs users's connexion info
+     *
+     * @return array
+     */
     public function  getUserAuthInfoList()
     {
 

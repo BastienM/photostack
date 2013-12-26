@@ -1,4 +1,4 @@
-### Photostack
+# Photostack
 ## a ZendFramework gallery based
 --------------------------------
 

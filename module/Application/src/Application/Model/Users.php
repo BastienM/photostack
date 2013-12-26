@@ -12,16 +12,17 @@ class Users
 
     public function exchangeArray($data)
     {
-        $this->username   = (isset($data['username'])) ? $data['username'] : null;
-        $this->password   = (isset($data['password'])) ? $data['password'] : null;
-        $this->mail       = (isset($data['mail'])) ? $data['mail'] : null;
-        $this->age        = (isset($data['age'])) ? $data['age'] : null;
+        $this->username = (isset($data['username'])) ? $data['username'] : null;
+        $this->password = (isset($data['password'])) ? $data['password'] : null;
+        $this->mail = (isset($data['mail'])) ? $data['mail'] : null;
+        $this->age = (isset($data['age'])) ? $data['age'] : null;
     }
 
     private function setUsername($username)
     {
         $this->username = $username;
     }
+
     public function getUsername()
     {
         return $this->username;
@@ -31,6 +32,7 @@ class Users
     {
         $this->password = $password;
     }
+
     public function getPassword()
     {
         return $this->password;
@@ -40,6 +42,7 @@ class Users
     {
         $this->mail = $mail;
     }
+
     public function getMail()
     {
         return $this->mail;
@@ -49,6 +52,7 @@ class Users
     {
         $this->age = $age;
     }
+
     public function getAge()
     {
         return $this->age;
@@ -58,6 +62,7 @@ class Users
     {
         $this->role = $role;
     }
+
     public function getRole()
     {
         return $this->role;

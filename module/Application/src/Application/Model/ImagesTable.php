@@ -3,16 +3,16 @@
 namespace Application\Model;
 
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\TableGateway\AbstractTableGateway;
-use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\AdapterAwareInterface;
+use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\TableGateway\AbstractTableGateway;
 
 class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     /*
      * Table name in database
      */
-    protected $table ='images';
+    protected $table = 'images';
 
     /**
      * setDbAdapter allow to call the class from within the
@@ -25,7 +25,7 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
     {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new HydratingResultSet();
-         
+
         $this->initialize();
     }
 
@@ -51,7 +51,7 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
      */
     public function getImageInfo($id)
     {
-        $id  = (int)$id;
+        $id = (int)$id;
         $rowset = $this->select(array('id' => $id));
         $row = $rowset->current();
 
@@ -62,13 +62,14 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
         return $row;
     }
 
+
     /**
-     * getUserImages fetchs all the images of
-     * the username provided
+     * getUserImages fetchs all the images of  the username provided
      *
-     * @param  string $pseudo [description]
-     *
-     * @return \Zend\Db\ResultSet\ResultSet array   contains all user's images info
+     * @param $pseudo
+     * @param bool $paginated
+     * @return \Zend\Db\ResultSet\ResultSet|\Zend\Paginator\Paginator
+     * contains all user's images info
      */
     public function getUserImages($pseudo, $paginated = false)
     {
@@ -130,7 +131,8 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
 
     }
 
-    public function deleteUserImages($user) {
+    public function deleteUserImages($user)
+    {
 
         $this->delete(array('owner' => $user));
     }

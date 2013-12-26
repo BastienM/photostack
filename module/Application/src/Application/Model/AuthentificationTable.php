@@ -3,19 +3,17 @@
 namespace Application\Model;
 
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\ResultSet\ResultSet;
-use Zend\Db\TableGateway\AbstractTableGateway;
-use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\AdapterAwareInterface;
-use Zend\Db\Sql\Select;
+use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Sql\Expression;
+use Zend\Db\TableGateway\AbstractTableGateway;
 
 class AuthentificationTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     /*
      * Table name in database
      */
-    protected $table ='authentification';
+    protected $table = 'authentification';
 
     /**
      * setDbAdapter allow to call the class from within the
@@ -53,7 +51,7 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
      */
     public function getUserAuthInfo($mail)
     {
-        $mail  = $mail;
+        $mail = $mail;
         $rowset = $this->select(array('mail' => $mail));
         $row = $rowset->current();
 
@@ -69,20 +67,21 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
      * the user login attempts
      * @param  string $mail provided in the form
      */
-    public function createLog($mail) {
+    public function createLog($mail)
+    {
 
         $mail = $mail;
         $date = new \DateTime();
 
         $data = array(
-            'mail'      => $mail,
-            'lastTry'   => $date->getTimestamp(),
+            'mail' => $mail,
+            'lastTry' => $date->getTimestamp(),
             'numberTry' => '1',
             'isBlocked' => '0',
-            );
+        );
 
         if ($data['mail'] && $data['lastTry']) {
-            
+
             $this->insert($data);
         }
     }
@@ -90,40 +89,43 @@ class AuthentificationTable extends AbstractTableGateway implements AdapterAware
     /**
      * authentificationFailed whenever the user fails to login,
      * we add 1 to his login attempts counter
-     * 
+     *
      * @param  string $mail provided in the form
      */
-    public function authentificationFailed($mail) {
+    public function authentificationFailed($mail)
+    {
 
         $this->update(array(
-          'numberTry' => new Expression('numberTry + 1')),
-          array(
-              'mail' => $mail)
-          );
+                'numberTry' => new Expression('numberTry + 1')),
+            array(
+                'mail' => $mail)
+        );
     }
 
     /**
      * blockAccount when the user fails for the third time
      * to login, we lock his account
-     * 
+     *
      * @param  string $mail provided in the form
      */
-    public function blockAccount($mail) {
+    public function blockAccount($mail)
+    {
 
-       $this->update(array(
-          'isBlocked' => '1'),
-          array(
-              'mail' => $mail)
+        $this->update(array(
+                'isBlocked' => '1'),
+            array(
+                'mail' => $mail)
         );
     }
 
-    public function unlockAccount($mail) {
+    public function unlockAccount($mail)
+    {
 
         $this->update(array(
-            'isBlocked' => '0',
-            'numberTry' => '0'),
+                'isBlocked' => '0',
+                'numberTry' => '0'),
             array(
-            'mail' => $mail)
+                'mail' => $mail)
         );
     }
 }
