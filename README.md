@@ -1,5 +1,2 @@
-# Photostack
-## a ZendFramework gallery based
---------------------------------
-
+##Photostack, a ZendFramework gallery based
 under construction

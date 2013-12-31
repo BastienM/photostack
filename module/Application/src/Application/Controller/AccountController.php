@@ -80,9 +80,6 @@ class AccountController extends AbstractActionController
             $view->images = $imageSet;
         }
 
-        /*
-         * Loading another view if admin
-         */
         if  ($userSession->offsetExists('role') && $userSession->role == "admin")
         {
             $view->userAuthList = $this->getUsersTable()->getUserAuthInfoList();
