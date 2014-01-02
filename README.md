@@ -1,2 +1,6 @@
 ##Photostack, a ZendFramework gallery based
-under construction
+
+Admin account
+* username : Bastien
+* mail : admin@photostack.dev
+* pwd : YbbMXOoYdCk9

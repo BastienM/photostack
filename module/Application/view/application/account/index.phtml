@@ -53,7 +53,7 @@
                                 <img src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])); ?>">
                             </a>
                             <figcaption>
-                                <p><?php echo str_replace('-', '/', $image['uploaded']).", ".$image['weight']."mo" ?></p>
+                                <p><?php echo date('d/m/Y', $image['uploaded']).", ".ceil(round(($image['weight']/(1024)),1))."ko" ?></p>
                                 <hr>
                                 <ul>
                                     <li><h4><span class="label label-primary"><?php echo "#".$image['publishId'] ?></span></h4></li>
@@ -97,13 +97,15 @@
                 <h4 class="modal-title" id="myModalLabel">Adding a photo</h4>
             </div>
             <div class="modal-body">
-                <?php $form->prepare(); ?>
+                <?php
+                $form->setAttribute('action', $this->url('upload'));
+                $form->prepare(); ?>
                 <?php echo $this->form()->openTag($form); ?>
                 <div class='form-group'>
                     <?php $fileElement = $form->get('image-file');
                     echo $this->formFile($fileElement);
                     echo $this->formElementErrors($fileElement); ?>
-                <button type="button" class="upload-btn btn btn-primary">Upload</button>
+                <button type="submit" class="upload-btn btn btn-primary">Upload</button>
                 <?php echo $this->form()->closeTag(); ?>
             </div>
         </div><!-- /.modal-content -->

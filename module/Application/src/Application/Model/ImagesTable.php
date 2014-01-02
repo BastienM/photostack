@@ -93,31 +93,20 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
 
     /*
      * under construction
-     * 
-    public function saveImageInfo(Users $users)
+     */
+    public function saveImageInfo($image)
     {
         $data = array(
-            'pseudo'   => $users->pseudo
-            'password' => $users->password
-            'mail'     => $users->mail
-            'age'      => $users->age
-            );
+            'url'       => $image['url'],
+            'name'      => $image['name'],
+            'uploaded'  => $image['date'],
+            'owner'     => $image['owner'],
+            'publishId' => $image['id'],
+            'weight'    => $image['size'],
+        );
 
-        $pseudo = (string)$users->pseudo;
-
-        if ($this->getUserInfo($pseudo) == null) {
-            $this->insert($data);
-        } elseif ($this->getUserInfo($pseudo) !== null) {
-            $this->update(
-                $data,
-                array(
-                    'pseudo' => $pseudo,
-                    )
-                );
-        } else {
-            throw new \Exception('Form pseudo does not exist');
-        }
-    }*/
+        $this->insert($data);
+    }
 
     /**
      * deleteImage delete the image whose ID# is provided
@@ -127,6 +116,9 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
      */
     public function deleteImage($id)
     {
+        /* add a method to delete also the
+         * picture physicly
+         */
         $this->delete(array('id' => $id));
 
     }

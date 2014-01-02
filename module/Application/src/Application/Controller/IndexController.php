@@ -98,7 +98,7 @@ class IndexController extends AbstractActionController
         * 
         * @var string
         */
-        $randomUser = $userliste[array_rand($userliste)];
+        $randomUser = @$userliste[array_rand($userliste)];
 
         /*
         * Picking up only the photos whose are owned by the selected user
