@@ -46,6 +46,9 @@
                         <h1>Vos images</h1>
                         <button type="button" class="upload btn btn-info btn-md" data-toggle="modal" data-target="#upload"><i class="fa fa-picture-o"></i> Upload photo</button>
                     </div>
+                    <?php if($this->uploadInfo) {
+                        echo $this->uploadInfo;
+                    } ?>
                     <div class="row">
                         <?php foreach ($this->images as $image) { ?>
                         <figure class="col-xs-6 col-md-3 col-md-3">

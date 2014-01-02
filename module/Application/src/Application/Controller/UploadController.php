@@ -2,12 +2,15 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Session\SessionManager;
-use Zend\Session\Container;
-use Zend\Filter\File\RenameUpload;
 use Application\Form\UploadForm;
+use Zend\Filter\File\RenameUpload;
+use Zend\Filter\File\Rename;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
+use Zend\Session\SessionManager;
 
+//ini_set('memory_limit', '6M');
+error_reporting(0);
 
 class UploadController extends AbstractActionController
 {
@@ -33,9 +36,14 @@ class UploadController extends AbstractActionController
     {
         $form = new UploadForm('upload-form');
 
+        $manager = new SessionManager();
+        $manager->start();
+
+        $userSession = new Container('user');
+
         $request = $this->getRequest();
         if ($request->isPost()) {
-            // Make certain to merge the files info!
+
             $post = array_merge_recursive(
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray()
@@ -43,25 +51,19 @@ class UploadController extends AbstractActionController
 
             $form->setData($post);
             if ($form->isValid()) {
+
                 $data = $form->getData();
 
-                error_reporting(0);
-
                 $extension = pathinfo($data['image-file']['name'], PATHINFO_EXTENSION);
-                $filename = sessionid() . uniqid() . '.' . $extension;
+                $filename = session_id() . uniqid() . '.' . $extension;
 
-                $filter = new RenameUpload("./public/image/" . $filename);
-                echo $filter->filter($data['image-file']);
-
-                $manager = new SessionManager();
-                $manager->start();
-
-                $userSession = new Container('user');
+                $filter = new RenameUpload("./public/image/".$filename);
+                echo @$filter->filter($data['image-file']);
 
                 $time = new \DateTime();
 
                 $image = array(
-                    'url' => "image/" . $filename,
+                    'url' => "http://photostack.dev/image/$filename",
                     'name' => $data['image-file']['name'],
                     'date' => $time->getTimestamp(),
                     'owner' => $userSession->username,
@@ -71,9 +73,28 @@ class UploadController extends AbstractActionController
 
                 $this->getImagesTable()->saveImageInfo($image);
 
-                $this->redirect()->toUrl('/account');
+                $userSession->uploadInfo = "<div class='alert alert-success alert-dismissable'>
+                                                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                <strong>Success !</strong> Your file has been uploaded.
+                                            </div>";
 
-            } else echo "error";
+                $this->redirect()->toRoute('account');
+
+            } else {
+                $userSession->uploadInfo = "<div class='alert alert-danger alert-dismissable'>
+                                                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                <strong>Error !</strong> Your file doesn't matchs the requirements.
+                                            </div>";
+                $this->redirect()->toRoute('account');
+
+
+            }
+        } else {
+            $userSession->uploadInfo = "<div class='alert alert-warning alert-dismissable'>
+                                                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                <strong>Warning !</strong> Something came wrong, try again.
+                                            </div>";
+            $this->redirect()->toRoute('account');
         }
     }
 }

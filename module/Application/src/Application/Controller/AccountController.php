@@ -86,6 +86,12 @@ class AccountController extends AbstractActionController
             $view->setTemplate('application/account/index_admin.phtml');
         }
 
+        if  ($userSession->offsetExists('uploadInfo'))
+        {
+            $view->uploadInfo = $userSession->uploadInfo;
+            unset($userSession->uploadInfo);
+        }
+
         return $view;
     }
 

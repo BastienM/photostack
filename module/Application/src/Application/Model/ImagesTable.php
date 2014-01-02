@@ -91,8 +91,12 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
         return $userImages;
     }
 
-    /*
-     * under construction
+
+    /**
+     * saveImageInfo saves the uploaded image's info
+     * to the DB
+     *
+     * @param $image array
      */
     public function saveImageInfo($image)
     {
@@ -123,6 +127,13 @@ class ImagesTable extends AbstractTableGateway implements AdapterAwareInterface
 
     }
 
+
+    /**
+     * deleteUserImages deletes all images
+     * owned by the provided user
+     *
+     * @param $user
+     */
     public function deleteUserImages($user)
     {
 

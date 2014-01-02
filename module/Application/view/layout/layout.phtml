@@ -18,11 +18,7 @@
 
     <!-- Scripts -->
     <?php echo $this->headScript()
-
-    ->prependFile($this->basePath() . '/bootstrap/js/bootstrap.min.js')
-    ->prependFile($this->basePath() . '/js/html5shiv.js')
-    ->prependFile($this->basePath() . '/js/modernizr.js')
-    ->prependFile($this->basePath() . '/js/jquery.js') ?>
+    ->prependFile($this->basePath() . '/js/modernizr.js') ?>
 
 </head>
 <body>
@@ -31,6 +27,8 @@
     </div>
         <?php echo $this->inlineScript()
         ->prependFile($this->basePath() . '/js/fancybox.js')
-        ->prependFile($this->basePath() . '/fancybox/source/jquery.fancybox.js?v=2.1.5') ?>
+        ->prependFile($this->basePath() . '/fancybox/source/jquery.fancybox.js?v=2.1.5')
+        ->prependFile($this->basePath() . '/bootstrap/js/bootstrap.min.js')
+        ->prependFile($this->basePath() . '/js/jquery.js'); ?>
 </body>
     </html>
