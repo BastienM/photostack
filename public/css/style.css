@@ -48,6 +48,11 @@ body {
     width: 160px;
     height: 160px;
 }
+#gallery .thumbnail-name {
+    float: left;
+    max-width: 100px;
+    text-indent: -9999px;
+}
 #gallery img {
     width: 150px;
     height: 150px;

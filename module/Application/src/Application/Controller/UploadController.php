@@ -4,13 +4,12 @@ namespace Application\Controller;
 
 use Application\Form\UploadForm;
 use Zend\Filter\File\RenameUpload;
-use Zend\Filter\File\Rename;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\Session\SessionManager;
 
 //ini_set('memory_limit', '6M');
-error_reporting(0);
+//error_reporting(0);
 
 class UploadController extends AbstractActionController
 {
@@ -58,7 +57,7 @@ class UploadController extends AbstractActionController
                 $filename = session_id() . uniqid() . '.' . $extension;
 
                 $filter = new RenameUpload("./public/image/".$filename);
-                echo @$filter->filter($data['image-file']);
+                echo $filter->filter($data['image-file']['tmp_name']);
 
                 $time = new \DateTime();
 

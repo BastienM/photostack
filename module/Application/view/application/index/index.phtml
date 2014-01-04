@@ -54,16 +54,19 @@
     <div class="row clearfix">
         <div class="col-md-12 column">
             <div class="row clearfix">
-                <section class="col-md-12 column" id="gallery">
-                    <div class="page-header" itemprop="brand">
+                <section class="col-md-12 column h-product" id="gallery">
+                    <div class="page-header p-brand">
                         <?php echo ("<h2>".$this->user."'s<small> gallery</small></h2>"); ?>
                     </div>
                     <?php foreach ($this->images as $image) { ?>
-                        <figure class='col-xs-6 col-md-3 col-md-3' itemprop="image">
-                            <a href="<?php echo $image['url'] ?>" class='thumbnail fancybox'>
-                                <img src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])) ?>" description="<?php echo $image['name'] ?>">
-                            </a>
-                        </figure>
+                        <div class="h-product">
+                            <p class="thumbnail-name p-name"><?php echo $image['name'] ?></p>
+                            <figure class='col-xs-6 col-md-3 col-md-3' itemprop="image">
+                                <a href="<?php echo $image['url'] ?>" class='thumbnail fancybox u-url'>
+                                    <img class="u-photo" src="<?php echo $image['url'] ?>" alt="<?php echo ($image['id']."_".str_replace(' ', '_', $image['name'])) ?>" description="<?php echo $image['name'] ?>">
+                                </a>
+                            </figure>
+                        </div>
                     <?php } ?>
                 </section>
             </div>
